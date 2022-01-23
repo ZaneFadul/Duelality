@@ -1,0 +1,84 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://sprites/boss1.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends KinematicBody2D
+
+const UP_DIRECTION = Vector2.UP
+
+export var speed := 600.0
+
+export var jump_strength := 1500.0
+export var maximum_jumps := 1
+export var double_jump_strength := 1200.0
+export var gravity := 4500.0
+
+var _jumps_made := 0
+var _velocity := Vector2.ZERO
+
+onready var _pivot: Node2D = $Sprite
+#onready var _animation_player: AnimationPlayer = $
+onready var _start_scale: Vector2 = _pivot.scale
+
+func _physics_process(delta: float) -> void:
+	var _horizontal_direction = (
+		Input.get_action_strength(\"move_right\")
+		- Input.get_action_strength(\"move_left\")
+	)
+	
+	_velocity.x = _horizontal_direction * speed
+	_velocity.y += gravity * delta
+	
+	#movement conditions
+	var is_falling := _velocity.y > 0.0 and not is_on_floor()
+	var is_jumping := Input.is_action_just_pressed(\"jump\") and is_on_floor()
+	var is_double_jumping := Input.is_action_just_pressed(\"jump\") and is_falling
+	var is_jump_cancelled := Input.is_action_just_released(\"jump\") and _velocity.y<0.0
+	var is_idling := is_on_floor() and is_zero_approx(_velocity.x)
+	var is_running := is_on_floor() and not is_zero_approx(_velocity.x)
+	
+	if is_jumping:
+		_jumps_made += 1
+		_velocity.y = -jump_strength
+	elif is_double_jumping:
+		_jumps_made += 1
+		if _jumps_made <= maximum_jumps:
+			_velocity.y = -double_jump_strength
+	elif is_jump_cancelled:
+		_velocity.y/=2
+	elif is_idling or is_running:
+		_jumps_made = 0
+	
+	_velocity = move_and_slide(_velocity, UP_DIRECTION)
+	
+	if not is_zero_approx(_velocity.x):
+		_pivot.scale.x = sign(_velocity.x) * _start_scale.x
+	
+	#if is_jumping or is_double_jumping:
+	#	_animation_player.play(\"jump\")
+	#elif is_running:
+	#	_animation_player.play(\"run\")
+	#elif is_falling:
+	#	_animation_player.play(\"fall\")
+	#elif is_idling:
+	#	_animation_player.play(\"idle\")
+"
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 26.5, 28.5 )
+
+[node name="KinematicBody2D" type="KinematicBody2D"]
+script = SubResource( 2 )
+speed = 500.0
+jump_strength = 1250.0
+gravity = 3000.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -1.5, 3.5 )
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 2.38419e-07, 1.19209e-07 )
+scale = Vector2( 0.332031, 0.332031 )
+texture = ExtResource( 1 )
