@@ -25,8 +25,14 @@ onready var _start_scale: Vector2 = _pivot.scale
 func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed(\"move_left\"):
 		
+		var sinceDashStart = .5
+
 		#Max Speed Limitation
 		if _velocity.x > -top_speed:
+			
+			if (sinceDashStart > 0):
+				sinceDashStart -= delta
+				_velocity.x -= speed * 20
 			
 			#Pivot
 			if _velocity.x > 0:
@@ -38,12 +44,21 @@ func _physics_process(delta: float) -> void:
 			
 			#Airdrift Speed
 			else:
-				_velocity.x -= speed *.8
+				_velocity.x -= speed *.6
+				
+		else:
+			_velocity.x = lerp(_velocity.x, -top_speed, .2)
 		
 	elif Input.is_action_pressed(\"move_right\"):
 		
 		#Max Speed Limiation
 		if _velocity.x < top_speed:
+			
+			var sinceDashStart = .5
+			
+			if (sinceDashStart > 0):
+				sinceDashStart -= delta
+				_velocity.x += speed * 20
 			
 			#Pivot
 			if _velocity.x < 0:
@@ -55,14 +70,17 @@ func _physics_process(delta: float) -> void:
 				
 			#Airdrift Speed
 			else:
-				_velocity.x += speed *.8
+				_velocity.x += speed *.6
+		
+		else:
+			_velocity.x = lerp(_velocity.x, top_speed, .2)
 		
 	else:
 		_velocity.x = lerp(_velocity.x,0,.8)
 	
 	_velocity.y += gravity * delta
 	
-	#movement conditions
+	#Jump Conditions
 	var is_falling := _velocity.y > 0.0 and not is_on_floor()
 	var is_jumping := Input.is_action_just_pressed(\"jump\") and is_on_floor()
 	var is_double_jumping := Input.is_action_just_pressed(\"jump\") and is_falling
@@ -86,6 +104,7 @@ func _physics_process(delta: float) -> void:
 		_jumps_made = 0
 	
 	#Horizontal Movement
+	print(_velocity.x)
 	_velocity = move_and_slide(_velocity, UP_DIRECTION)
 	
 	if not is_zero_approx(_velocity.x):
