@@ -7,11 +7,12 @@ script/source = "extends KinematicBody2D
 
 const UP_DIRECTION = Vector2.UP
 
-export var speed := 600.0
+export var speed := 50
+export var top_speed := 500
 
-export var jump_strength := 1500.0
-export var maximum_jumps := 1
-export var double_jump_strength := 1200.0
+export var jump_strength := 1000.0
+export var maximum_jumps := 2
+export var double_jump_strength := 800.0
 export var gravity := 4500.0
 
 var _jumps_made := 0
@@ -22,12 +23,43 @@ onready var _pivot: Node2D = $Sprite
 onready var _start_scale: Vector2 = _pivot.scale
 
 func _physics_process(delta: float) -> void:
-	var _horizontal_direction = (
-		Input.get_action_strength(\"move_right\")
-		- Input.get_action_strength(\"move_left\")
-	)
+	if Input.is_action_pressed(\"move_left\"):
+		
+		#Max Speed Limitation
+		if _velocity.x > -top_speed:
+			
+			#Pivot
+			if _velocity.x > 0:
+				_velocity.x -= speed * 2
+			
+			#Grounded Speed
+			if is_on_floor():
+				_velocity.x -= speed
+			
+			#Airdrift Speed
+			else:
+				_velocity.x -= speed *.8
+		
+	elif Input.is_action_pressed(\"move_right\"):
+		
+		#Max Speed Limiation
+		if _velocity.x < top_speed:
+			
+			#Pivot
+			if _velocity.x < 0:
+				_velocity.x += speed * 2
+			
+			#Grounded Speed
+			if is_on_floor():
+				_velocity.x += speed
+				
+			#Airdrift Speed
+			else:
+				_velocity.x += speed *.8
+		
+	else:
+		_velocity.x = lerp(_velocity.x,0,.8)
 	
-	_velocity.x = _horizontal_direction * speed
 	_velocity.y += gravity * delta
 	
 	#movement conditions
@@ -38,11 +70,14 @@ func _physics_process(delta: float) -> void:
 	var is_idling := is_on_floor() and is_zero_approx(_velocity.x)
 	var is_running := is_on_floor() and not is_zero_approx(_velocity.x)
 	
+	#Jumping
 	if is_jumping:
 		_jumps_made += 1
 		_velocity.y = -jump_strength
+		_velocity.x *= .6
 	elif is_double_jumping:
 		_jumps_made += 1
+		_velocity.x *= .4
 		if _jumps_made <= maximum_jumps:
 			_velocity.y = -double_jump_strength
 	elif is_jump_cancelled:
@@ -50,6 +85,7 @@ func _physics_process(delta: float) -> void:
 	elif is_idling or is_running:
 		_jumps_made = 0
 	
+	#Horizontal Movement
 	_velocity = move_and_slide(_velocity, UP_DIRECTION)
 	
 	if not is_zero_approx(_velocity.x):
@@ -70,7 +106,6 @@ extents = Vector2( 26.5, 28.5 )
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
 script = SubResource( 2 )
-speed = 500.0
 jump_strength = 1250.0
 gravity = 3000.0
 
