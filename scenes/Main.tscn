@@ -6,15 +6,15 @@
 [node name="Main" type="Node"]
 
 [node name="KinematicBody2D" parent="." instance=ExtResource( 1 )]
-position = Vector2( 51, 491 )
+position = Vector2( 407, 434 )
 
-[node name="StaticBody2D" parent="." instance=ExtResource( 2 )]
+[node name="Wall" parent="." instance=ExtResource( 2 )]
 
-[node name="StaticBody2D2" parent="." instance=ExtResource( 2 )]
+[node name="Wall2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 628, -135 )
 
-[node name="StaticBody2D3" parent="." instance=ExtResource( 2 )]
+[node name="Wall3" parent="." instance=ExtResource( 2 )]
 position = Vector2( -264, -304 )
 
-[node name="StaticBody2D4" parent="." instance=ExtResource( 2 )]
+[node name="Wall4" parent="." instance=ExtResource( 2 )]
 position = Vector2( 589, -474 )
