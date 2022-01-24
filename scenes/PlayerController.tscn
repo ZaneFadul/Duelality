@@ -8,7 +8,12 @@ script/source = "extends KinematicBody2D
 const UP_DIRECTION = Vector2.UP
 
 export var speed := 50
-export var top_speed := 500
+var initial_speed := speed
+export var top_speed := 450
+export var sinceDashStart = .7
+export var dash_multiplier = 20
+export var pivot_multiplier = 2
+export var airdrift_multiplier = .5
 
 export var jump_strength := 1000.0
 export var maximum_jumps := 2
@@ -22,61 +27,54 @@ onready var _pivot: Node2D = $Sprite
 #onready var _animation_player: AnimationPlayer = $
 onready var _start_scale: Vector2 = _pivot.scale
 
+func update_speed(speed, delta, direction):
+	
+	speed = 50
+	
+	# Foxtrot Dash
+	if (sinceDashStart > 0):
+		sinceDashStart -= delta
+		return speed * dash_multiplier
+	
+	# Pivot
+	elif (direction == 'left'):
+			return speed * pivot_multiplier
+			
+	#Grounded 
+	elif is_on_floor():
+		return speed
+	#Airdrift
+	elif not is_on_floor():
+		return speed * airdrift_multiplier
+
 func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed(\"move_left\"):
 		
-		var sinceDashStart = .5
-
 		#Max Speed Limitation
 		if _velocity.x > -top_speed:
 			
-			if (sinceDashStart > 0):
-				sinceDashStart -= delta
-				_velocity.x -= speed * 20
-			
-			#Pivot
-			if _velocity.x > 0:
-				_velocity.x -= speed * 2
-			
-			#Grounded Speed
-			if is_on_floor():
-				_velocity.x -= speed
-			
-			#Airdrift Speed
-			else:
-				_velocity.x -= speed *.6
+			speed = update_speed(speed, delta, 'left')
+			_velocity.x -= speed
 				
+		#Slowdown while over top_speed
 		else:
-			_velocity.x = lerp(_velocity.x, -top_speed, .2)
+			_velocity.x = lerp(_velocity.x, -top_speed, .3)
 		
 	elif Input.is_action_pressed(\"move_right\"):
 		
 		#Max Speed Limiation
 		if _velocity.x < top_speed:
 			
-			var sinceDashStart = .5
-			
-			if (sinceDashStart > 0):
-				sinceDashStart -= delta
-				_velocity.x += speed * 20
-			
-			#Pivot
-			if _velocity.x < 0:
-				_velocity.x += speed * 2
-			
-			#Grounded Speed
-			if is_on_floor():
-				_velocity.x += speed
-				
-			#Airdrift Speed
-			else:
-				_velocity.x += speed *.6
+			speed = update_speed(speed, delta, 'right')
+			_velocity.x += speed
 		
+		#Slowdown while over top_speed
 		else:
-			_velocity.x = lerp(_velocity.x, top_speed, .2)
-		
+			_velocity.x = lerp(_velocity.x, top_speed, .3)
+	
+	#Slowdown while not putting any movement
 	else:
-		_velocity.x = lerp(_velocity.x,0,.8)
+		_velocity.x = lerp(_velocity.x,0,.2)
 	
 	_velocity.y += gravity * delta
 	
