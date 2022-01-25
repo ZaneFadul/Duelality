@@ -9,7 +9,6 @@ func _ready():
 	active = true
 	
 func _process(delta):
-	print(root.get('animation_state'))
 	var character_animation_state = root.get('animation_state')
 	
 	match character_animation_state:

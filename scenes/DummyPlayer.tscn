@@ -1,180 +1,15 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://sprites/spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://scenes/PlayerAnimations.gd" type="Script" id=2]
+[ext_resource path="res://scenes/PlayerHurtbox.gd" type="Script" id=3]
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends KinematicBody2D
 
 const UP_DIRECTION = Vector2.UP
 
-#Animations
-var animation_state = 'IDLE'
 
-export var speed := 50
-var initial_speed := speed
-export var top_speed := 450
-export var sinceDashStart = .7
-export var dash_multiplier = 20
-export var pivot_multiplier = 2
-export var airdrift_multiplier = .5
-
-export var jump_strength := 1000.0
-export var maximum_jumps := 2
-export var double_jump_strength := 800.0
-export var gravity := 4500.0
-
-var _jumps_made := 0
-var _velocity := Vector2.ZERO
-
-onready var _pivot: Node2D = $Sprite
-onready var _start_scale: Vector2 = _pivot.scale
-
-func update_speed(speed, delta, direction):
-	
-	speed = 50
-	
-	# Foxtrot Dash
-	if (sinceDashStart > 0):
-		sinceDashStart -= delta
-		return speed * dash_multiplier
-	else:
-		sinceDashStart = .7
-	
-	# Pivot
-	if (direction == 'left'):
-			return speed * pivot_multiplier
-			
-	#Grounded 
-	elif is_on_floor():
-		return speed
-	#Airdrift
-	elif not is_on_floor():
-		return speed * airdrift_multiplier
-
-func _physics_process(delta: float) -> void:
-	if Input.is_action_pressed(\"move_left\"):
-		
-		#Max Speed Limitation
-		if _velocity.x > -top_speed:
-			
-			speed = update_speed(speed, delta, 'left')
-			_velocity.x -= speed
-				
-		#Slowdown while over top_speed
-		else:
-			_velocity.x = lerp(_velocity.x, -top_speed, .3)
-		
-	elif Input.is_action_pressed(\"move_right\"):
-		
-		#Max Speed Limiation
-		if _velocity.x < top_speed:
-			
-			speed = update_speed(speed, delta, 'right')
-			_velocity.x += speed
-		
-		#Slowdown while over top_speed
-		else:
-			_velocity.x = lerp(_velocity.x, top_speed, .3)
-	
-	#Slowdown while not putting any movement
-	else:
-		_velocity.x = lerp(_velocity.x,0,.9)
-	
-		
-	_velocity.y += gravity * delta
-	
-	#Conditions
-
-	
-	#Jumping
-	var is_falling := _velocity.y > 0.0 and not is_on_floor()
-	var is_rising := _velocity.y < 0.0 and not is_on_floor()
-	var is_jumping := Input.is_action_just_pressed(\"jump\") and is_on_floor()
-	var is_double_jumping := Input.is_action_just_pressed(\"jump\") and is_falling
-	var is_jump_cancelled := Input.is_action_just_released(\"jump\") and _velocity.y<0.0
-	var is_idling := is_on_floor() and is_zero_approx(_velocity.x)
-	var is_running := is_on_floor() and not is_zero_approx(_velocity.x)
-	
-	if is_jumping:
-		_jumps_made += 1
-		_velocity.y = -jump_strength
-		_velocity.x *= .6
-	elif is_double_jumping:
-		_jumps_made += 1
-		_velocity.x *= .4
-		if _jumps_made <= maximum_jumps:
-			_velocity.y = -double_jump_strength
-	elif is_jump_cancelled:
-		_velocity.y/=2
-	elif is_idling or is_running:
-		_jumps_made = 0
-	
-	#Horizontal Movement
-	_velocity = move_and_slide(_velocity, UP_DIRECTION)
-	
-	animation_state = update_animation_state()
-	#Animations
-	
-		
-
-	
-	if not is_zero_approx(_velocity.x):
-		_pivot.scale.x = sign(_velocity.x) * _start_scale.x
-		pass
-		
-func update_animation_state():
-	
-	var is_falling := _velocity.y > 0.0 and not is_on_floor()
-	var is_rising := _velocity.y < 0.0 and not is_on_floor()
-	var is_jumping := Input.is_action_just_pressed(\"jump\") and is_on_floor()
-	var is_double_jumping := Input.is_action_just_pressed(\"jump\") and is_falling
-	var is_jump_cancelled := Input.is_action_just_released(\"jump\") and _velocity.y<0.0
-	var is_idling := is_on_floor() and is_zero_approx(_velocity.x)
-	var is_running := is_on_floor() and not is_zero_approx(_velocity.x)
-	var is_floating := not is_on_floor() and abs(_velocity.y) < 5
-	
-	if Input.is_action_just_pressed(\"attack\"):
-		return 'ATTACK'
-		
-	elif is_running:
-		return 'RUN'
-	
-	elif Input.is_action_pressed(\"move_down\"):
-		return 'CROUCH'
-		
-	elif is_rising:
-		return 'RISING'
-		
-	elif is_floating:
-		return 'FLOATING'
-
-	elif is_falling:
-		return 'FALLING'
-		
-	elif is_idling:
-		return 'IDLE'
-
-	
-		
-	
-	
-	
-	#if is_jumping or is_double_jumping:
-	#	_animation_player.play(\"jump\")
-	#elif is_running:
-	#	_animation_player.play(\"run\")
-	#elif is_falling:
-	#	_animation_player.play(\"fall\")
-	#elif is_idling:
-	#	_animation_player.play(\"idle\")
-
-#Attack
-func _on_AttackHitbox_body_entered(body):
-	print('HITTING ON G')
-	if body.is_in_group('hurtbox'):
-		body.take_damage()
-	pass # Replace with function body.
 "
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -435,12 +270,11 @@ transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource(
 
 [node name="PlayerController" type="KinematicBody2D"]
 script = SubResource( 2 )
-jump_strength = 1250.0
-gravity = 3000.0
 
 [node name="PlayerHurtbox" type="CollisionShape2D" parent="." groups=["hurtbox"]]
 position = Vector2( -2, 8 )
 shape = SubResource( 1 )
+script = ExtResource( 3 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Attack = SubResource( 3 )
@@ -456,7 +290,6 @@ anims/idle = SubResource( 11 )
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 12, -1 )
 texture = ExtResource( 1 )
-flip_h = true
 hframes = 30
 
 [node name="AttackHitbox" type="Area2D" parent="Sprite"]
@@ -475,4 +308,4 @@ active = true
 parameters/playback = SubResource( 32 )
 script = ExtResource( 2 )
 
-[connection signal="body_entered" from="Sprite/AttackHitbox" to="." method="_on_AttackHitbox_body_entered"]
+[connection signal="area_entered" from="Sprite/AttackHitbox" to="." method="_on_AttackHitbox_area_entered"]
