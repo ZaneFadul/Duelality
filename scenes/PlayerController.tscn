@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://sprites/spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://scenes/PlayerAnimations.gd" type="Script" id=2]
@@ -134,15 +134,14 @@ func update_animation_state():
 	var is_running := is_on_floor() and not is_zero_approx(_velocity.x)
 	var is_floating := not is_on_floor() and abs(_velocity.y) < 5
 	
-	
-	if Input.is_action_pressed(\"move_down\"):
-		return 'CROUCH'
-		
-	elif Input.is_action_just_pressed(\"attack\"):
+	if Input.is_action_just_pressed(\"attack\"):
 		return 'ATTACK'
-
+		
 	elif is_running:
 		return 'RUN'
+	
+	elif Input.is_action_pressed(\"move_down\"):
+		return 'CROUCH'
 		
 	elif is_rising:
 		return 'RISING'
@@ -152,9 +151,11 @@ func update_animation_state():
 
 	elif is_falling:
 		return 'FALLING'
-
+		
 	elif is_idling:
 		return 'IDLE'
+
+	
 		
 	
 	
@@ -363,6 +364,8 @@ switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=39]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=40]
+
 [sub_resource type="AnimationNodeStateMachine" id=31]
 states/Attack/node = SubResource( 12 )
 states/Attack/position = Vector2( 82, 30 )
@@ -380,7 +383,7 @@ states/Rising/node = SubResource( 17 )
 states/Rising/position = Vector2( 344, 212 )
 states/Run/node = SubResource( 18 )
 states/Run/position = Vector2( 82, 164 )
-transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource( 21 ), "Attack", "Idle", SubResource( 22 ), "Run", "Idle", SubResource( 23 ), "Idle", "Rising", SubResource( 24 ), "Run", "Rising", SubResource( 25 ), "Idle", "Crouch", SubResource( 29 ), "Rising", "Floating", SubResource( 33 ), "Floating", "Falling", SubResource( 34 ), "Falling", "Landing", SubResource( 35 ), "Landing", "Idle", SubResource( 36 ), "Crouch", "Idle", SubResource( 37 ), "Crouch", "Attack", SubResource( 38 ), "Attack", "Crouch", SubResource( 39 ) ]
+transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource( 21 ), "Attack", "Idle", SubResource( 22 ), "Run", "Idle", SubResource( 23 ), "Idle", "Rising", SubResource( 24 ), "Run", "Rising", SubResource( 25 ), "Idle", "Crouch", SubResource( 29 ), "Rising", "Floating", SubResource( 33 ), "Floating", "Falling", SubResource( 34 ), "Falling", "Landing", SubResource( 35 ), "Landing", "Idle", SubResource( 36 ), "Crouch", "Idle", SubResource( 37 ), "Crouch", "Attack", SubResource( 38 ), "Attack", "Crouch", SubResource( 39 ), "Landing", "Attack", SubResource( 40 ) ]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=32]
 
