@@ -171,10 +171,8 @@ func update_animation_state():
 
 #Attack
 func _on_AttackHitbox_body_entered(body):
-	print('HITTING ON G')
 	if body.is_in_group('hurtbox'):
 		body.take_damage()
-	pass # Replace with function body.
 "
 
 [sub_resource type="RectangleShape2D" id=1]

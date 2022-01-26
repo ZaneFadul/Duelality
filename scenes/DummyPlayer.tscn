@@ -9,7 +9,8 @@ script/source = "extends KinematicBody2D
 
 const UP_DIRECTION = Vector2.UP
 
-
+func take_damage():
+	print('OW WHAT THE FUCK')
 "
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -268,10 +269,10 @@ transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource(
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=32]
 
-[node name="PlayerController" type="KinematicBody2D"]
+[node name="PlayerController" type="KinematicBody2D" groups=["hurtbox"]]
 script = SubResource( 2 )
 
-[node name="PlayerHurtbox" type="CollisionShape2D" parent="." groups=["hurtbox"]]
+[node name="PlayerHurtbox" type="CollisionShape2D" parent="."]
 position = Vector2( -2, 8 )
 shape = SubResource( 1 )
 script = ExtResource( 3 )
