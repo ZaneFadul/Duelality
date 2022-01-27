@@ -4,7 +4,11 @@ var input_list = [
 	"LEFT",
 	"RIGHT",
 	"UP",
-	"DOWN"
+	"DOWN",
+	"W",
+	"A",
+	"S",
+	"D"
 ]
 
 var action_names = get_dir_contents("res://scenes/controller/actions/")

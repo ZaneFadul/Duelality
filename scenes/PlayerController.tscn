@@ -1,49 +1,89 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=41 format=2]
 
-[ext_resource path="res://sprites/boss1.png" type="Texture" id=1]
+[ext_resource path="res://sprites/spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://scenes/controller/Controller.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/PlayerAnimations.gd" type="Script" id=3]
+[ext_resource path="res://scenes/controller/ControllerPlayer.tscn" type="PackedScene" id=4]
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends KinematicBody2D
 
 const UP_DIRECTION = Vector2.UP
 
-export var speed := 600.0
+#Animations
+var animation_state = 'IDLE'
+#Future Animation States
+enum {IDLE, RUN, JUMP, ATTACK, RISING, FALLING, CROUCH, FLOATING}
+export var speed := 50
+var initial_speed := speed
+export var top_speed := 450
+export var sinceDashStart = .7
+export var dash_multiplier = 20
+export var pivot_multiplier = 2
+export var airdrift_multiplier = .5
 
-export var jump_strength := 1500.0
-export var maximum_jumps := 1
-export var double_jump_strength := 1200.0
+export var jump_strength := 1000.0
+export var maximum_jumps := 2
+export var double_jump_strength := 800.0
 export var gravity := 4500.0
+
+export(Dictionary) var action_map
 
 var _jumps_made := 0
 var _velocity := Vector2.ZERO
 
+var is_falling := false
+var is_rising := false
+var is_jumping := false
+var is_double_jumping := false
+var is_jump_cancelled := false
+var is_idling := false
+var is_running := false
+
 onready var _pivot: Node2D = $Sprite
-#onready var _animation_player: AnimationPlayer = $
 onready var _start_scale: Vector2 = _pivot.scale
 
-func _physics_process(delta: float) -> void:
-	var _horizontal_direction = (
-		Input.get_action_strength(\"move_right\")
-		- Input.get_action_strength(\"move_left\")
-	)
+func update_speed(speed, delta, direction):
 	
-	_velocity.x = _horizontal_direction * speed
+	speed = 50
+	
+	# Foxtrot Dash
+	if (sinceDashStart > 0):
+		sinceDashStart -= delta
+		return speed * dash_multiplier
+	else:
+		sinceDashStart = .7
+	
+	# Pivot
+	if (direction == 'left'):
+			return speed * pivot_multiplier
+			
+	#Grounded 
+	elif is_on_floor():
+		return speed
+	#Airdrift
+	elif not is_on_floor():
+		return speed * airdrift_multiplier
+
+func _physics_process(delta: float) -> void:
+	_velocity.x = lerp(_velocity.x,0,.9)
+	
+		
 	_velocity.y += gravity * delta
 	
-	#movement conditions
-	var is_falling := _velocity.y > 0.0 and not is_on_floor()
-	var is_jumping := Input.is_action_just_pressed(\"jump\") and is_on_floor()
-	var is_double_jumping := Input.is_action_just_pressed(\"jump\") and is_falling
-	var is_jump_cancelled := Input.is_action_just_released(\"jump\") and _velocity.y<0.0
-	var is_idling := is_on_floor() and is_zero_approx(_velocity.x)
-	var is_running := is_on_floor() and not is_zero_approx(_velocity.x)
+	#Conditions
+	is_falling = _velocity.y > 0.0 and not is_on_floor()
+	is_rising = _velocity.y < 0.0 and not is_on_floor()
+	is_idling = is_on_floor() and is_zero_approx(_velocity.x)
+	is_running = is_on_floor() and not is_zero_approx(_velocity.x)
 	
 	if is_jumping:
 		_jumps_made += 1
 		_velocity.y = -jump_strength
+		_velocity.x *= .6
 	elif is_double_jumping:
 		_jumps_made += 1
+		_velocity.x *= .4
 		if _jumps_made <= maximum_jumps:
 			_velocity.y = -double_jump_strength
 	elif is_jump_cancelled:
@@ -51,10 +91,52 @@ func _physics_process(delta: float) -> void:
 	elif is_idling or is_running:
 		_jumps_made = 0
 	
+	#Horizontal Movement
 	_velocity = move_and_slide(_velocity, UP_DIRECTION)
+	
+	animation_state = update_animation_state()
+	#Animations
 	
 	if not is_zero_approx(_velocity.x):
 		_pivot.scale.x = sign(_velocity.x) * _start_scale.x
+		pass
+		
+func update_animation_state():
+	
+	#var is_falling := _velocity.y > 0.0 and not is_on_floor()
+	#var is_rising := _velocity.y < 0.0 and not is_on_floor()
+	#var is_jumping := Input.is_action_just_pressed(\"jump\") and is_on_floor()
+	#var is_double_jumping := Input.is_action_just_pressed(\"jump\") and is_falling
+	#var is_jump_cancelled := Input.is_action_just_released(\"jump\") and _velocity.y<0.0
+	#var is_idling := is_on_floor() and is_zero_approx(_velocity.x)
+	#var is_running := is_on_floor() and not is_zero_approx(_velocity.x)
+	var is_floating := not is_on_floor() and abs(_velocity.y) < 5
+	
+	if Input.is_action_just_pressed(\"attack\"):
+		return 'ATTACK'
+		
+	elif is_running:
+		return 'RUN'
+	
+	elif Input.is_action_pressed(\"move_down\"):
+		return 'CROUCH'
+		
+	elif is_rising:
+		return 'RISING'
+		
+	elif is_floating:
+		return 'FLOATING'
+
+	elif is_falling:
+		return 'FALLING'
+		
+	elif is_idling:
+		return 'IDLE'
+
+	
+		
+	
+	
 	
 	#if is_jumping or is_double_jumping:
 	#	_animation_player.play(\"jump\")
@@ -67,26 +149,260 @@ func _physics_process(delta: float) -> void:
 "
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 26.5, 28.5 )
+extents = Vector2( 26, 24.5 )
 
-[node name="KinematicBody2D" type="KinematicBody2D"]
+[sub_resource type="Animation" id=3]
+resource_name = "Attack"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 25, -0.25, 0, 0.25, 0, 26, -0.25, 0, 0.25, 0, 27, -0.25, 0, 0.25, 0, 28, -0.25, 0, 0.25, 0, 29, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 )
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "Crouch"
+length = 0.15
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 23, -0.25, 0, 0.25, 0, 24, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1 )
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Falling"
+length = 0.1
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 21, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "Floating"
+length = 0.1
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 20, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "Landing"
+length = 0.2
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 22, -0.25, 0, 0.25, 0, 23, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1 )
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "Rising"
+length = 0.2
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 18, -0.25, 0, 0.25, 0, 19, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1 )
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "Run"
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 8, -0.25, 0, 0.25, 0, 9, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 11, -0.25, 0, 0.25, 0, 12, -0.25, 0, 0.25, 0, 13, -0.25, 0, 0.25, 0, 14, -0.25, 0, 0.25, 0, 15, -0.25, 0, 0.25, 0, 16, -0.25, 0, 0.25, 0, 17, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 )
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "idle"
+length = 0.8
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 2, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 6, -0.25, 0, 0.25, 0, 7, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 )
+}
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "Attack"
+
+[sub_resource type="AnimationNodeAnimation" id=13]
+animation = "Crouch"
+
+[sub_resource type="AnimationNodeAnimation" id=14]
+animation = "Falling"
+
+[sub_resource type="AnimationNodeAnimation" id=15]
+animation = "Floating"
+
+[sub_resource type="AnimationNodeAnimation" id=19]
+animation = "idle"
+
+[sub_resource type="AnimationNodeAnimation" id=16]
+animation = "Landing"
+
+[sub_resource type="AnimationNodeAnimation" id=17]
+animation = "Rising"
+
+[sub_resource type="AnimationNodeAnimation" id=18]
+animation = "Run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=20]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=21]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=22]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=23]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=24]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=25]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=29]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=33]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=34]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=35]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=36]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=37]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=38]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=39]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=40]
+
+[sub_resource type="AnimationNodeStateMachine" id=31]
+states/Attack/node = SubResource( 12 )
+states/Attack/position = Vector2( 82, 30 )
+states/Crouch/node = SubResource( 13 )
+states/Crouch/position = Vector2( 260, 17 )
+states/Falling/node = SubResource( 14 )
+states/Falling/position = Vector2( 686, 212 )
+states/Floating/node = SubResource( 15 )
+states/Floating/position = Vector2( 516, 212 )
+states/Idle/node = SubResource( 19 )
+states/Idle/position = Vector2( 82, 101 )
+states/Landing/node = SubResource( 16 )
+states/Landing/position = Vector2( 846, 220 )
+states/Rising/node = SubResource( 17 )
+states/Rising/position = Vector2( 344, 212 )
+states/Run/node = SubResource( 18 )
+states/Run/position = Vector2( 82, 164 )
+transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource( 21 ), "Attack", "Idle", SubResource( 22 ), "Run", "Idle", SubResource( 23 ), "Idle", "Rising", SubResource( 24 ), "Run", "Rising", SubResource( 25 ), "Idle", "Crouch", SubResource( 29 ), "Rising", "Floating", SubResource( 33 ), "Floating", "Falling", SubResource( 34 ), "Falling", "Landing", SubResource( 35 ), "Landing", "Idle", SubResource( 36 ), "Crouch", "Idle", SubResource( 37 ), "Crouch", "Attack", SubResource( 38 ), "Attack", "Crouch", SubResource( 39 ), "Landing", "Attack", SubResource( 40 ) ]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=32]
+
+[node name="PlayerController" type="KinematicBody2D"]
 script = SubResource( 2 )
-speed = 500.0
 jump_strength = 1250.0
 gravity = 3000.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -1.5, 3.5 )
+position = Vector2( -2, 8 )
 shape = SubResource( 1 )
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Attack = SubResource( 3 )
+anims/Crouch = SubResource( 4 )
+anims/Falling = SubResource( 5 )
+anims/Floating = SubResource( 6 )
+anims/Landing = SubResource( 7 )
+anims/RESET = SubResource( 8 )
+anims/Rising = SubResource( 9 )
+anims/Run = SubResource( 10 )
+anims/idle = SubResource( 11 )
+
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 2.38419e-07, 1.19209e-07 )
-scale = Vector2( 0.332031, 0.332031 )
+position = Vector2( 12, -1 )
 texture = ExtResource( 1 )
+flip_h = true
+hframes = 30
+
+[node name="PlayerAnimations" type="AnimationTree" parent="."]
+tree_root = SubResource( 31 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource( 32 )
+script = ExtResource( 3 )
 
 [node name="Controller" parent="." instance=ExtResource( 2 )]
 action_map = {
-"LEFT": "Foo",
-"RIGHT": "Bar",
-"UP": "Foobar"
+"LEFT": "MoveLeft",
+"RIGHT": "MoveRight",
+"UP": "Jump"
 }
+
+[node name="ControllerPlayer" parent="." instance=ExtResource( 4 )]
