@@ -6,16 +6,35 @@
 [node name="Main" type="Node"]
 
 [node name="KinematicBody2D" parent="." instance=ExtResource( 1 )]
-position = Vector2( 407, 434 )
+position = Vector2( 185, 509 )
 scale = Vector2( 1.34567, 1.34567 )
+action_map = {
+"LEFT": "MoveLeft",
+"RIGHT": "MoveRight",
+"UP": "Jump"
+}
 
 [node name="Wall" parent="." instance=ExtResource( 2 )]
 
+[node name="Wall6" parent="." instance=ExtResource( 2 )]
+position = Vector2( 10, -575 )
+
 [node name="Wall2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 628, -135 )
+position = Vector2( 959, -49 )
 
 [node name="Wall3" parent="." instance=ExtResource( 2 )]
-position = Vector2( -264, -304 )
+position = Vector2( -970, -109 )
 
 [node name="Wall4" parent="." instance=ExtResource( 2 )]
-position = Vector2( 589, -474 )
+position = Vector2( 959, -101 )
+
+[node name="Wall5" parent="." instance=ExtResource( 2 )]
+position = Vector2( -971, -50 )
+
+[node name="PlayerController" parent="." instance=ExtResource( 1 )]
+position = Vector2( 838, 523 )
+action_map = {
+"A": "MoveLeft",
+"D": "MoveRight",
+"W": "Jump"
+}
