@@ -32,7 +32,7 @@ position = Vector2( 959, -101 )
 position = Vector2( -971, -50 )
 
 [node name="PlayerController" parent="." instance=ExtResource( 1 )]
-position = Vector2( 838, 523 )
+position = Vector2( -76, 420 )
 action_map = {
 "A": "MoveLeft",
 "D": "MoveRight",

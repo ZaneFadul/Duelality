@@ -399,10 +399,5 @@ parameters/playback = SubResource( 32 )
 script = ExtResource( 3 )
 
 [node name="Controller" parent="." instance=ExtResource( 2 )]
-action_map = {
-"LEFT": "MoveLeft",
-"RIGHT": "MoveRight",
-"UP": "Jump"
-}
 
 [node name="ControllerPlayer" parent="." instance=ExtResource( 4 )]
