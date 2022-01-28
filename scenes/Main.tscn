@@ -1,26 +1,29 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/PlayerController.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/wall.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/DummyPlayer.tscn" type="PackedScene" id=3]
 
 [node name="Main" type="Node"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 743, 38 )
 scale = Vector2( 1.34567, 1.34567 )
+action_map = {
+"LEFT": "MoveLeft",
+"RIGHT": "MoveRight",
+"UP": "Jump"
+}
 
 [node name="Wall" parent="." instance=ExtResource( 2 )]
 
+[node name="Wall6" parent="." instance=ExtResource( 2 )]
+position = Vector2( 13, 24 )
+
 [node name="Wall2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 628, -135 )
+position = Vector2( 959, -49 )
 
 [node name="Wall3" parent="." instance=ExtResource( 2 )]
-position = Vector2( -264, -304 )
+position = Vector2( -970, -109 )
 
 [node name="Wall4" parent="." instance=ExtResource( 2 )]
 position = Vector2( 589, -474 )
-
-[node name="Dummy" parent="." instance=ExtResource( 3 )]
-position = Vector2( 925, 53 )
-scale = Vector2( 1.34567, 1.34567 )

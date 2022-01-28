@@ -8,7 +8,8 @@ func _ready():
 	playback.start('Idle')
 	active = true
 	
-func _process(delta):
+func _process(_delta):
+	#print(root.get('animation_state'))
 	var character_animation_state = root.get('animation_state')
 	
 	match character_animation_state:
