@@ -73,8 +73,6 @@ func update_speed(speed, delta, direction):
 
 func _physics_process(delta: float) -> void:
 	_velocity.x = lerp(_velocity.x,0,.9)
-	
-		
 	_velocity.y += gravity * delta
 	
 	#Conditions
@@ -124,9 +122,6 @@ func update_animation_state():
 	elif is_running:
 		return 'RUN'
 	
-	elif Input.is_action_pressed(\"move_down\"):
-		return 'CROUCH'
-		
 	elif is_rising:
 		return 'RISING'
 		

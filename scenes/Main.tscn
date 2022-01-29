@@ -10,6 +10,7 @@
 position = Vector2( 129, 349 )
 scale = Vector2( 1.34567, 1.34567 )
 action_map = {
+"DOWN": "Crouch",
 "LEFT": "MoveLeft",
 "RIGHT": "MoveRight",
 "UP": "Jump"
@@ -29,4 +30,4 @@ position = Vector2( 21, -456 )
 scale = Vector2( 0.766794, 1.02757 )
 
 [node name="PlayerController" parent="." instance=ExtResource( 3 )]
-position = Vector2( 866, 365 )
+position = Vector2( 868, 365 )
