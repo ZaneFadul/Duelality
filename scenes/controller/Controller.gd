@@ -19,10 +19,6 @@ func _ready():
 	start_time = OS.get_ticks_msec()
 	actions = Inputs.generate_key_action_pairs(action_map)
 	
-func _process(delta):
-	if OS.get_ticks_msec() > 10000 and OS.get_ticks_msec() < 10100:
-		send_snapshot_payload()
-	
 func _input(event):
 	update_inputs(event)
 
@@ -77,5 +73,10 @@ func end_action_and_add_snapshot(actionfunc):
 			#erase
 			current_actions.erase(curr)
 
+func get_snapshots():
+	var to_return = snapshots
+	snapshots = []
+	return to_return
+	
 func send_snapshot_payload():
 	emit_signal('sending_payload', snapshots)

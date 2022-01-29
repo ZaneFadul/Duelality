@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Inputs="*res://scenes/controller/Inputs.tscn"
+SnapshotManager="*res://scenes/controller/snapshot/SnapshotManager.tscn"
 
 [input]
 
