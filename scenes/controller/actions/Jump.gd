@@ -3,8 +3,8 @@ extends Node
 func function(params):
 	
 	var player = params["player"]
-
-	player.is_jumping = player.is_on_floor()
+	
+	player._just_jumped = true
 	player.is_double_jumping = player.is_falling
 	player.is_jump_cancelled = player._velocity.y < 0.0
 

@@ -11,7 +11,7 @@ script/source = "extends KinematicBody2D
 const UP_DIRECTION = Vector2.UP
 
 signal request_clone(mainscene, player, payload)
-signal player_killed(other_player)
+
 #Animations
 var animation_state = 'IDLE'
 #Future Animation States
@@ -31,6 +31,7 @@ export var gravity := 4500.0
 
 export(Dictionary) var action_map
 
+var _just_jumped := false
 var _jumps_made := 0
 var _velocity := Vector2.ZERO
 
@@ -46,8 +47,8 @@ onready var _pivot: Node2D = $Sprite
 onready var _start_scale: Vector2 = _pivot.scale
 
 func _ready():
+	print(self, $ControllerPlayer.is_clone, $ControllerPlayer.snapshot_payload)
 	connect('request_clone', get_node('/root/SnapshotManager'), '_on_clone_requested')
-	connect('player_killed', get_node('/root/Game'), '_on_player_killed')
 
 func update_speed(speed, delta, direction):
 	
@@ -71,24 +72,30 @@ func update_speed(speed, delta, direction):
 	elif not is_on_floor():
 		return speed * airdrift_multiplier
 
-func _physics_process(delta: float) -> void:
+func _draw():
+	draw_line($PlayerHurtbox.position, Vector2($PlayerHurtbox.position.x, $PlayerHurtbox.position.y+50),Color.red)
+	
 
+func _physics_process(delta: float) -> void:
 	
 	if is_on_floor():
 		var normal: Vector2 = get_floor_normal()
 		$Sprite.rotation = normal.angle()+1.57
 		$PlayerHurtbox.rotation = normal.angle()+1.57
 	
+	else:
+		_velocity.y += gravity * delta
+	
 	_velocity.x = lerp(_velocity.x,0,.9)
 	
-
-	_velocity.y += gravity * delta
+	
 	
 	#Conditions
 	is_falling = _velocity.y > 0.0 and not is_on_floor()
 	is_rising = _velocity.y < 0.0 and not is_on_floor()
 	is_idling = is_on_floor() and is_zero_approx(_velocity.x)
 	is_running = is_on_floor() and not is_zero_approx(_velocity.x)
+	is_jumping = _just_jumped and is_on_floor()
 	
 	if is_jumping:
 		_jumps_made += 1
@@ -105,7 +112,8 @@ func _physics_process(delta: float) -> void:
 		_jumps_made = 0
 	
 	#Horizontal Movement
-	_velocity = move_and_slide_with_snap(_velocity, UP_DIRECTION)
+	var snap=transform.y * 128 if !is_jumping else Vector2.ZERO
+	_velocity = move_and_slide_with_snap(_velocity, snap, UP_DIRECTION)
 	
 	animation_state = update_animation_state()
 	#Animations
@@ -131,6 +139,9 @@ func update_animation_state():
 	elif is_running:
 		return 'RUN'
 	
+	elif Input.is_action_pressed(\"move_down\"):
+		return 'CROUCH'
+		
 	elif is_rising:
 		return 'RISING'
 		
@@ -163,15 +174,12 @@ func _on_AttackHitbox_body_entered(body):
 		body.take_damage()
 		# Round ends
 		# Emit signal player_killed, check if that player was the main body or a clone, if body, go to next round, if at last round, show win screen, go back to menu
-		emit_signal('player_killed', body)
 		# Increment round, create clone and send snapshot
 		emit_signal('request_clone', get_tree().get_current_scene(), filename, $Controller.get_snapshots())
 		
 func take_damage():
 	print('OW I HIT MYSELF?')
 		
-func is_clone():
-	return $ControllerPlayer.is_clone
 "
 
 [sub_resource type="RectangleShape2D" id=1]
