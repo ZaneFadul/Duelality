@@ -8,8 +8,7 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("hi, im the menu")
-
+	pass
 
 func _on_Start_pressed():
 	get_tree().change_scene("res://scenes/managers/Game.tscn")

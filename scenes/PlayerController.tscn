@@ -9,9 +9,9 @@
 script/source = "extends KinematicBody2D
 
 const UP_DIRECTION = Vector2.UP
+var player_id = 1
+signal player_killed(other_player, mainscene, player, snapshot_payload)
 
-signal request_clone(mainscene, player, payload)
-signal player_killed(other_player)
 #Animations
 var animation_state = 'IDLE'
 #Future Animation States
@@ -46,7 +46,6 @@ onready var _pivot: Node2D = $Sprite
 onready var _start_scale: Vector2 = _pivot.scale
 
 func _ready():
-	connect('request_clone', get_node('/root/SnapshotManager'), '_on_clone_requested')
 	connect('player_killed', get_node('/root/Game'), '_on_player_killed')
 
 func update_speed(speed, delta, direction):
@@ -72,16 +71,7 @@ func update_speed(speed, delta, direction):
 		return speed * airdrift_multiplier
 
 func _physics_process(delta: float) -> void:
-
-	
-	if is_on_floor():
-		var normal: Vector2 = get_floor_normal()
-		$Sprite.rotation = normal.angle()+1.57
-		$PlayerHurtbox.rotation = normal.angle()+1.57
-	
 	_velocity.x = lerp(_velocity.x,0,.9)
-	
-
 	_velocity.y += gravity * delta
 	
 	#Conditions
@@ -105,7 +95,7 @@ func _physics_process(delta: float) -> void:
 		_jumps_made = 0
 	
 	#Horizontal Movement
-	_velocity = move_and_slide_with_snap(_velocity, UP_DIRECTION)
+	_velocity = move_and_slide(_velocity, UP_DIRECTION)
 	
 	animation_state = update_animation_state()
 	#Animations
@@ -163,13 +153,12 @@ func _on_AttackHitbox_body_entered(body):
 		body.take_damage()
 		# Round ends
 		# Emit signal player_killed, check if that player was the main body or a clone, if body, go to next round, if at last round, show win screen, go back to menu
-		emit_signal('player_killed', body)
+		emit_signal('player_killed', body, get_tree().get_current_scene(), filename, $Controller.get_snapshots())
 		# Increment round, create clone and send snapshot
-		emit_signal('request_clone', get_tree().get_current_scene(), filename, $Controller.get_snapshots())
-		
+
 func take_damage():
-	print('OW I HIT MYSELF?')
-		
+	print(\"ow\")
+	
 func is_clone():
 	return $ControllerPlayer.is_clone
 "
