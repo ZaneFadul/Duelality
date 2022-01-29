@@ -7,18 +7,8 @@
 [node name="Main" type="Node"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 153, 342 )
+position = Vector2( 86, 41 )
 scale = Vector2( 1.34567, 1.34567 )
-speed = 50
-top_speed = 450
-sinceDashStart = 0.7
-dash_multiplier = 20
-pivot_multiplier = 2
-airdrift_multiplier = 0.5
-jump_strength = 1000.0
-maximum_jumps = 2
-double_jump_strength = 800.0
-gravity = 4500.0
 action_map = {
 "LEFT": "MoveLeft",
 "RIGHT": "MoveRight",

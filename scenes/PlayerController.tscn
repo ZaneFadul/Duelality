@@ -77,17 +77,13 @@ func _draw():
 
 func _physics_process(delta: float) -> void:
 	
-	var space_state = get_world_2d().direct_space_state
-	var result = space_state.intersect_ray($PlayerHurtbox.position, Vector2($PlayerHurtbox.position.x, $PlayerHurtbox.position.y+100) )
+	if is_on_floor():
+		var normal: Vector2 = get_floor_normal()
+		$Sprite.rotation = normal.angle()+1.57
+		$PlayerHurtbox.rotation = normal.angle()+1.57
 	
-	if result:
-		print('RESULT: ',result)
-		$Sprite.rotation = result['collider'].rotation
-		$PlayerHurtbox.rotation = result['collider'].rotation
-		
 	_velocity.x = lerp(_velocity.x,0,.9)
 	
-		
 	_velocity.y += gravity * delta
 	
 	#Conditions
@@ -111,7 +107,7 @@ func _physics_process(delta: float) -> void:
 		_jumps_made = 0
 	
 	#Horizontal Movement
-	_velocity = move_and_slide(_velocity, UP_DIRECTION)
+	_velocity = move_and_slide_with_snap(_velocity, UP_DIRECTION)
 	
 	animation_state = update_animation_state()
 	#Animations
@@ -174,6 +170,9 @@ func _on_AttackHitbox_body_entered(body):
 		# Emit signal player_killed, check if that player was the main body or a clone, if body, go to next round, if at last round, show win screen, go back to menu
 		# Increment round, create clone and send snapshot
 		emit_signal('request_clone', get_tree().get_current_scene(), filename, $Controller.get_snapshots())
+		
+func take_damage():
+	print('OW I HIT MYSELF?')
 		
 "
 
@@ -435,7 +434,7 @@ transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource(
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=32]
 
-[node name="PlayerController" type="KinematicBody2D"]
+[node name="PlayerController" type="KinematicBody2D" groups=["hurtbox"]]
 script = SubResource( 2 )
 
 [node name="PlayerHurtbox" type="CollisionShape2D" parent="." groups=["hurtbox"]]
