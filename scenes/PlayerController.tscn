@@ -158,6 +158,7 @@ func _on_AttackHitbox_body_entered(body):
 	if body.is_in_group('hurtbox'):
 		body.take_damage()
 		# Round ends
+		# Emit signal player_killed, check if that player was the main body or a clone, if body, go to next round, if at last round, show win screen, go back to menu
 		# Increment round, create clone and send snapshot
 		emit_signal('request_clone', get_tree().get_current_scene(), filename, $Controller.get_snapshots())
 		
