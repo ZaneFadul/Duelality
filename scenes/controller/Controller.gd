@@ -27,10 +27,12 @@ func _physics_process(delta):
 	for input in current_inputs:
 		if input in actions:
 			actions[input].call_func({"player":get_parent(), "delta": delta})
-			for action in current_actions:
-				if action.keys()[0] == actions[input]:
-					return
-			start_action_timer(actions[input], {"start": OS.get_ticks_msec() - start_time})
+			
+			var current_action_funcs = []
+			for current_action in current_actions:
+				current_action_funcs.append(current_action.keys()[0])
+			if not actions[input] in current_action_funcs:
+				start_action_timer(actions[input], {"start": OS.get_ticks_msec() - start_time})
 		else:
 			if input in action_map.keys():
 				print(input + " does not have an action mapped to it. Fix that please : )")
@@ -44,7 +46,7 @@ func update_inputs(event=null):
 				while input in current_inputs:
 					current_inputs.remove(input)
 					if not input in actions: return
-					end_action_and_add_snapshot(actions[input])					
+					end_action_and_add_snapshot(actions[input])
 	else:
 		for input in Inputs.input_list:
 			if Input.is_action_pressed(input) and not input in current_inputs:
