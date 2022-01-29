@@ -9,8 +9,8 @@
 script/source = "extends KinematicBody2D
 
 const UP_DIRECTION = Vector2.UP
-var player_id = 1
-signal player_killed(other_player, mainscene, player, snapshot_payload)
+
+signal request_clone(mainscene, player, payload)
 
 #Animations
 var animation_state = 'IDLE'
@@ -47,12 +47,8 @@ onready var _pivot: Node2D = $Sprite
 onready var _start_scale: Vector2 = _pivot.scale
 
 func _ready():
-<<<<<<< HEAD
-	connect('player_killed', get_node('/root/Game'), '_on_player_killed')
-=======
 	print(self, $ControllerPlayer.is_clone, $ControllerPlayer.snapshot_payload)
 	connect('request_clone', get_node('/root/SnapshotManager'), '_on_clone_requested')
->>>>>>> f40498979b8cf4f51777459f0af9c44df60dae8a
 
 func update_speed(speed, delta, direction):
 	
@@ -76,11 +72,6 @@ func update_speed(speed, delta, direction):
 	elif not is_on_floor():
 		return speed * airdrift_multiplier
 
-<<<<<<< HEAD
-func _physics_process(delta: float) -> void:
-	_velocity.x = lerp(_velocity.x,0,.9)
-	_velocity.y += gravity * delta
-=======
 func _draw():
 	draw_line($PlayerHurtbox.position, Vector2($PlayerHurtbox.position.x, $PlayerHurtbox.position.y+50),Color.red)
 	
@@ -98,7 +89,6 @@ func _physics_process(delta: float) -> void:
 	_velocity.x = lerp(_velocity.x,0,.9)
 	
 	
->>>>>>> f40498979b8cf4f51777459f0af9c44df60dae8a
 	
 	#Conditions
 	is_falling = _velocity.y > 0.0 and not is_on_floor()
@@ -122,12 +112,8 @@ func _physics_process(delta: float) -> void:
 		_jumps_made = 0
 	
 	#Horizontal Movement
-<<<<<<< HEAD
-	_velocity = move_and_slide(_velocity, UP_DIRECTION)
-=======
 	var snap=transform.y * 128 if !is_jumping else Vector2.ZERO
 	_velocity = move_and_slide_with_snap(_velocity, snap, UP_DIRECTION)
->>>>>>> f40498979b8cf4f51777459f0af9c44df60dae8a
 	
 	animation_state = update_animation_state()
 	#Animations
@@ -188,22 +174,12 @@ func _on_AttackHitbox_body_entered(body):
 		body.take_damage()
 		# Round ends
 		# Emit signal player_killed, check if that player was the main body or a clone, if body, go to next round, if at last round, show win screen, go back to menu
-<<<<<<< HEAD
-		emit_signal('player_killed', body, get_tree().get_current_scene(), filename, $Controller.get_snapshots())
-=======
->>>>>>> f40498979b8cf4f51777459f0af9c44df60dae8a
 		# Increment round, create clone and send snapshot
-
+		emit_signal('request_clone', get_tree().get_current_scene(), filename, $Controller.get_snapshots())
+		
 func take_damage():
-<<<<<<< HEAD
-	print(\"ow\")
-	
-func is_clone():
-	return $ControllerPlayer.is_clone
-=======
 	print('OW I HIT MYSELF?')
 		
->>>>>>> f40498979b8cf4f51777459f0af9c44df60dae8a
 "
 
 [sub_resource type="RectangleShape2D" id=1]
