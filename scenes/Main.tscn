@@ -7,8 +7,18 @@
 [node name="Main" type="Node"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 129, 349 )
+position = Vector2( 153, 342 )
 scale = Vector2( 1.34567, 1.34567 )
+speed = 50
+top_speed = 450
+sinceDashStart = 0.7
+dash_multiplier = 20
+pivot_multiplier = 2
+airdrift_multiplier = 0.5
+jump_strength = 1000.0
+maximum_jumps = 2
+double_jump_strength = 800.0
+gravity = 4500.0
 action_map = {
 "DOWN": "Crouch",
 "LEFT": "MoveLeft",
@@ -26,7 +36,8 @@ position = Vector2( 1024, -227 )
 position = Vector2( -988, -230 )
 
 [node name="Wall4" parent="." instance=ExtResource( 2 )]
-position = Vector2( 21, -456 )
+position = Vector2( 27, -497 )
+rotation = 0.261799
 scale = Vector2( 0.766794, 1.02757 )
 
 [node name="PlayerController" parent="." instance=ExtResource( 3 )]
