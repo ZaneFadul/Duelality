@@ -12,3 +12,6 @@ func function(params):
 	else:
 		player._velocity.x = lerp(player._velocity.x, player.top_speed, .3)
 	player.move_and_slide(player._velocity, player.UP_DIRECTION)
+
+func cleanup(params):
+	pass
