@@ -10,6 +10,8 @@ script/source = "extends KinematicBody2D
 
 const UP_DIRECTION = Vector2.UP
 
+signal request_clone(mainscene, player, payload)
+
 #Animations
 var animation_state = 'IDLE'
 #Future Animation States
@@ -42,6 +44,10 @@ var is_running := false
 
 onready var _pivot: Node2D = $Sprite
 onready var _start_scale: Vector2 = _pivot.scale
+
+func _ready():
+	print(self, $ControllerPlayer.is_clone, $ControllerPlayer.snapshot_payload)
+	connect('request_clone', get_node('/root/SnapshotManager'), '_on_clone_requested')
 
 func update_speed(speed, delta, direction):
 	
@@ -151,6 +157,10 @@ func update_animation_state():
 func _on_AttackHitbox_body_entered(body):
 	if body.is_in_group('hurtbox'):
 		body.take_damage()
+		# Round ends
+		# Increment round, create clone and send snapshot
+		emit_signal('request_clone', get_tree().get_current_scene(), filename, $Controller.get_snapshots())
+		
 "
 
 [sub_resource type="RectangleShape2D" id=1]

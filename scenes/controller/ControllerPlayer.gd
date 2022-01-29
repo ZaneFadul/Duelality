@@ -1,6 +1,6 @@
 extends Node
 
-var is_clone = true
+var is_clone = false
 var snapshot_payload
 var can_playback = false
 var start_time
@@ -10,7 +10,7 @@ func _ready():
 		
 func _process(delta):
 	if not is_clone:
-		queue_free()
+		return
 	if can_playback:
 		playback(delta)
 
@@ -26,3 +26,15 @@ func _on_payload_received(payload):
 	snapshot_payload = payload
 	start_time = OS.get_ticks_msec()
 	can_playback = true
+
+func upload_payload(payload):
+	is_clone = true
+	snapshot_payload = payload
+	start_time = OS.get_ticks_msec()
+	can_playback = true
+	
+func calibrate_snapshot():
+	for snapshot in snapshot_payload:
+		var actionfunc = snapshot.keys()[0]
+		#snapshot[actionfunc]["start"] = start_time - snapshot[actionfunc]["start"]
+		snapshot[actionfunc]["player"] = get_parent()
