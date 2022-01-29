@@ -13,7 +13,6 @@ func _ready():
 
 func _on_Start_pressed():
 	get_tree().change_scene("res://scenes/managers/Game.tscn")
-	
 
 
 func _on_Quit_pressed():

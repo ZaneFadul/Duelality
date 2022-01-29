@@ -78,10 +78,10 @@ func _draw():
 func _physics_process(delta: float) -> void:
 	
 	var space_state = get_world_2d().direct_space_state
-	var result = space_state.intersect_ray($PlayerHurtbox.position, Vector2($PlayerHurtbox.position.x, $PlayerHurtbox.position.y+100), [self] )
+	var result = space_state.intersect_ray($PlayerHurtbox.position, Vector2($PlayerHurtbox.position.x, $PlayerHurtbox.position.y+100) )
 	
 	if result:
-		print(result)
+		print('RESULT: ',result)
 		$Sprite.rotation = result['collider'].rotation
 		$PlayerHurtbox.rotation = result['collider'].rotation
 		
