@@ -20,8 +20,8 @@ export var speed := 50
 var initial_speed := speed
 export var top_speed := 450
 export var sinceDashStart = .7
-export var dash_multiplier = 20
-export var pivot_multiplier = 2
+export var dash_multiplier = 8
+export var pivot_multiplier = 1.5
 export var airdrift_multiplier = .5
 
 export var jump_strength := 1000.0
@@ -52,6 +52,13 @@ onready var _start_scale: Vector2 = _pivot.scale
 
 func _ready():
 	connect('player_killed', get_node('/root/Game'), '_on_player_killed')
+	set_physics_process(false)
+	yield(get_tree().create_timer(3), \"timeout\")
+	set_physics_process(true)
+	
+	
+	
+	
 
 func update_speed(speed, delta, direction):
 	
@@ -74,11 +81,10 @@ func update_speed(speed, delta, direction):
 	#Airdrift
 	elif not is_on_floor():
 		return speed * airdrift_multiplier
-
-func _draw():
-	draw_line($PlayerHurtbox.position, Vector2($PlayerHurtbox.position.x, $PlayerHurtbox.position.y+50),Color.red)
 	
 func _physics_process(delta: float) -> void:
+	
+	
 	if is_on_floor():
 		var normal: Vector2 = get_floor_normal()
 		$Sprite.rotation = normal.angle()+1.57
@@ -93,7 +99,7 @@ func _physics_process(delta: float) -> void:
 	is_jumping = _jump_pressed and is_on_floor()
 	is_double_jumping = _jump_pressed and is_falling
 	is_jump_cancelled = _jump_pressed and _velocity.y < 0.0
-	is_falling = _velocity.y > 0.0 and not is_on_floor()
+	is_falling = _velocity.y > 0.0 and not is_on_floor() and abs(_velocity.y) > 5
 	is_rising = _velocity.y < 0.0 and not is_on_floor()
 	is_idling = is_on_floor() and is_zero_approx(_velocity.x)
 	is_running = is_on_floor() and not is_zero_approx(_velocity.x)
@@ -113,17 +119,45 @@ func _physics_process(delta: float) -> void:
 		_jumps_made = 0
 	
 	#Horizontal Movement
-	var snap=transform.y * 128 if !is_jumping else Vector2.ZERO
-	_velocity = move_and_slide_with_snap(_velocity, snap, UP_DIRECTION)
+	
+	
+	if !get_collision_mask_bit(1):
+		_velocity = move_and_slide(_velocity, UP_DIRECTION)
+	else:
+		var snap=transform.y * 128 if !is_jumping else Vector2.ZERO
+		_velocity = move_and_slide_with_snap(_velocity, snap, UP_DIRECTION)
 	
 	animation_state = update_animation_state()
 	#Animations
 	
-	if not is_zero_approx(_velocity.x):
-		_pivot.scale.x = sign(_velocity.x) * _start_scale.x
-		pass
+	if _velocity.x > 0:
+		$Sprite.flip_h=true
+		$PlayerHurtbox.position.x = 0
+		$AttackHitbox.position.x = 35
+		$AttackHitbox.rotation_degrees=-16.5
 		
+		
+	elif _velocity.x < 0:
+		$Sprite.flip_h=false
+		$PlayerHurtbox.position.x= 24
+		$AttackHitbox.position.x = -23
+		$AttackHitbox.rotation_degrees = 20
+		
+		
+		
+	
+#		is_falling = _velocity.y > 0.0 and not is_on_floor() and not is_zero_approx(_velocity.y)
+#	print(is_falling, ' : ', _velocity.y > 0.0, ' : ', not is_on_floor(), ' : ', abs(_velocity.y) > 5 ,' : ', _velocity.y)
+	
 func update_animation_state():
+	
+	#var is_falling := _velocity.y > 0.0 and not is_on_floor()
+	#var is_rising := _velocity.y < 0.0 and not is_on_floor()
+	#var is_jumping := Input.is_action_just_pressed(\"jump\") and is_on_floor()
+	#var is_double_jumping := Input.is_action_just_pressed(\"jump\") and is_falling
+	#var is_jump_cancelled := Input.is_action_just_released(\"jump\") and _velocity.y<0.0
+	#var is_idling := is_on_floor() and is_zero_approx(_velocity.x)
+	#var is_running := is_on_floor() and not is_zero_approx(_velocity.x)
 	var is_floating := not is_on_floor() and abs(_velocity.y) < 5
 	
 	if _attack_pressed:
@@ -149,6 +183,20 @@ func update_animation_state():
 		
 	elif is_idling:
 		return 'IDLE'
+
+	
+		
+	
+	
+	
+	#if is_jumping or is_double_jumping:
+	#	_animation_player.play(\"jump\")
+	#elif is_running:
+	#	_animation_player.play(\"run\")
+	#elif is_falling:
+	#	_animation_player.play(\"fall\")
+	#elif is_idling:
+	#	_animation_player.play(\"idle\")
 
 #Attack
 func _on_AttackHitbox_body_entered(body):
@@ -190,7 +238,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 )
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite/AttackHitbox/AttackHitbox:disabled")
+tracks/1/path = NodePath("AttackHitbox/AttackHitbox:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -283,7 +331,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 )
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite/AttackHitbox/AttackHitbox:disabled")
+tracks/2/path = NodePath("AttackHitbox/AttackHitbox:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -340,7 +388,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 )
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite/AttackHitbox/AttackHitbox:disabled")
+tracks/1/path = NodePath("AttackHitbox/AttackHitbox:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -351,9 +399,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [ true ]
 }
-
-[sub_resource type="RectangleShape2D" id=41]
-extents = Vector2( 19.5254, 41.8052 )
 
 [sub_resource type="AnimationNodeAnimation" id=12]
 animation = "Attack"
@@ -431,12 +476,15 @@ transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource(
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=32]
 
+[sub_resource type="RectangleShape2D" id=41]
+extents = Vector2( 19.5254, 41.8052 )
+
 [node name="PlayerController" type="KinematicBody2D" groups=["hurtbox"]]
 collision_mask = 3
 script = SubResource( 2 )
 
 [node name="PlayerHurtbox" type="CollisionShape2D" parent="."]
-position = Vector2( -2, 8 )
+position = Vector2( 26, 0 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -453,17 +501,7 @@ anims/idle = SubResource( 11 )
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 12, -1 )
 texture = ExtResource( 1 )
-flip_h = true
 hframes = 30
-
-[node name="AttackHitbox" type="Area2D" parent="Sprite"]
-position = Vector2( 21, -25 )
-rotation = -0.287388
-scale = Vector2( 0.799999, 0.799999 )
-
-[node name="AttackHitbox" type="CollisionShape2D" parent="Sprite/AttackHitbox"]
-position = Vector2( 9.40967, 32.1091 )
-shape = SubResource( 41 )
 
 [node name="PlayerAnimations" type="AnimationTree" parent="."]
 tree_root = SubResource( 31 )
@@ -476,4 +514,13 @@ script = ExtResource( 3 )
 
 [node name="ControllerPlayer" parent="." instance=ExtResource( 4 )]
 
-[connection signal="body_entered" from="Sprite/AttackHitbox" to="." method="_on_AttackHitbox_body_entered"]
+[node name="AttackHitbox" type="Area2D" parent="."]
+position = Vector2( 33, -26 )
+rotation = -0.287388
+scale = Vector2( 0.799999, 0.799999 )
+
+[node name="AttackHitbox" type="CollisionShape2D" parent="AttackHitbox"]
+position = Vector2( 10, 31 )
+shape = SubResource( 41 )
+
+[connection signal="body_entered" from="AttackHitbox" to="." method="_on_AttackHitbox_body_entered"]

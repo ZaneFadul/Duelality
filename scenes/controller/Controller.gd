@@ -24,6 +24,9 @@ func _ready():
 	Inputs = get_node("/root/Inputs")
 	start_time = OS.get_ticks_msec()
 	actions = Inputs.generate_key_action_pairs(action_map)
+	set_physics_process(false)
+	yield(get_tree().create_timer(3), "timeout")
+	set_physics_process(true)
 	
 func _input(event):
 	update_inputs(event)
