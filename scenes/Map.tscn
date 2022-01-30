@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://sprites/map/map.png" type="Texture" id=1]
 [ext_resource path="res://sprites/map/map-wall.png" type="Texture" id=2]
@@ -11,6 +11,338 @@
 [ext_resource path="res://sprites/map/map-city3.png" type="Texture" id=9]
 [ext_resource path="res://sprites/map/map-bgnight.png" type="Texture" id=10]
 [ext_resource path="res://sprites/map/map-city2.png" type="Texture" id=11]
+[ext_resource path="res://sprites/map/light.png" type="Texture" id=12]
+[ext_resource path="res://sprites/neon/neon-ggj.png" type="Texture" id=13]
+[ext_resource path="res://sprites/neon/neon-stars2.png" type="Texture" id=14]
+[ext_resource path="res://sprites/neon/neon-armstrong.png" type="Texture" id=15]
+[ext_resource path="res://sprites/neon/neon-caution.png" type="Texture" id=16]
+[ext_resource path="res://sprites/neon/neon-ramen.png" type="Texture" id=17]
+[ext_resource path="res://sprites/neon/neon-triangles.png" type="Texture" id=18]
+[ext_resource path="res://sprites/neon/neon-22.png" type="Texture" id=19]
+[ext_resource path="res://sprites/neon/neon-stars.png" type="Texture" id=20]
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("towers/Towerright:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 660, -1560 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("towers/Towerleft:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, -1560 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("towers/Towerright:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("towers/Towerleft:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Map-city1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 491, 403 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Map-city1:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Map-city2:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 482, 350 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Map-city2:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Map-city3:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 474, 262 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Map-city3:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("neon:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("neon:rotation_degrees")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "towers"
+length = 100.0
+step = 100.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("towers/Towerright:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.001, 100 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 660, -1560 ), Vector2( 660, -1560 ), Vector2( 660, 150 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("towers/Towerleft:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 100 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, -1560 ), Vector2( 0, 150 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("towers/Towerright:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 100 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("towers/Towerleft:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 100 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Map-city1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 100 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 491, 403 ), Vector2( 491, 1500 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Map-city1:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 100 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("Map-city2:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 100 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 482, 350 ), Vector2( 482, 500 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("Map-city2:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 100 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("Map-city3:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 100 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 474, 262 ), Vector2( 474, 455 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("Map-city3:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 100 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("neon:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 100 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 1710 ) ]
+}
+tracks/11/type = "value"
+tracks/11/path = NodePath("neon:rotation_degrees")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0, 100 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0 ]
+}
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 480, 24.5 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 49, 59.5 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 10, 209.75 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 31, 24 )
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 46, 24 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 46, 26.5 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 59, 60 )
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 84.7753, 7 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 481.5, 9.5 )
 
 [node name="Map" type="Node2D"]
 
@@ -37,6 +369,58 @@ texture = ExtResource( 11 )
 position = Vector2( 491, 403 )
 texture = ExtResource( 8 )
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 1 )
+anims/towers = SubResource( 2 )
+
+[node name="neon" type="Node2D" parent="."]
+
+[node name="Neon-ggj" type="Sprite" parent="neon"]
+position = Vector2( 611, 102 )
+texture = ExtResource( 13 )
+
+[node name="Neon-22" type="Sprite" parent="neon"]
+position = Vector2( 612, 262 )
+texture = ExtResource( 19 )
+
+[node name="Neon-ramen2" type="Sprite" parent="neon"]
+position = Vector2( 612, -200 )
+texture = ExtResource( 17 )
+flip_h = true
+
+[node name="Neon-ramen" type="Sprite" parent="neon"]
+position = Vector2( 348, 169 )
+texture = ExtResource( 17 )
+
+[node name="Neon-stars2" type="Sprite" parent="neon"]
+position = Vector2( 349, -1075 )
+texture = ExtResource( 14 )
+
+[node name="Neon-stars" type="Sprite" parent="neon"]
+position = Vector2( 615, -682 )
+texture = ExtResource( 20 )
+
+[node name="Neon-armstrong" type="Sprite" parent="neon"]
+position = Vector2( 611, -476 )
+texture = ExtResource( 15 )
+flip_h = true
+
+[node name="Neon-triangles" type="Sprite" parent="neon"]
+position = Vector2( 348, -242 )
+texture = ExtResource( 18 )
+flip_h = true
+
+[node name="Neon-caution2" type="Sprite" parent="neon"]
+position = Vector2( -9, -772 )
+texture = ExtResource( 16 )
+offset = Vector2( 609, -119 )
+flip_h = true
+
+[node name="Neon-caution" type="Sprite" parent="neon"]
+position = Vector2( -249, -772 )
+texture = ExtResource( 16 )
+offset = Vector2( 609, -119 )
+
 [node name="towers" type="Node" parent="."]
 
 [node name="Towerleft" type="Sprite" parent="towers"]
@@ -55,6 +439,15 @@ centered = false
 texture = ExtResource( 2 )
 centered = false
 
+[node name="Light" type="Sprite" parent="elevator/Map-wall"]
+modulate = Color( 1, 0.698039, 0.309804, 1 )
+position = Vector2( 161, 97 )
+texture = ExtResource( 12 )
+
+[node name="Light" type="Sprite" parent="elevator/Map-wall/Light"]
+position = Vector2( 642, -1 )
+texture = ExtResource( 12 )
+
 [node name="Map-floor" type="Sprite" parent="elevator"]
 texture = ExtResource( 5 )
 centered = false
@@ -66,3 +459,75 @@ centered = false
 [node name="Map-crates" type="Sprite" parent="elevator"]
 texture = ExtResource( 3 )
 centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 480, 515.5 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 934, 431 )
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 25, 431.5 )
+shape = SubResource( 4 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 980, 161 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( -30, 160.75 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 854, 467 )
+shape = SubResource( 6 )
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 104, 465 )
+shape = SubResource( 6 )
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 373, 468 )
+shape = SubResource( 7 )
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 587, 465.5 )
+shape = SubResource( 8 )
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 480, 433 )
+shape = SubResource( 9 )
+
+[node name="oneway3" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="oneway3"]
+position = Vector2( 79.0028, 295.184 )
+rotation = 0.218166
+shape = SubResource( 11 )
+one_way_collision = true
+
+[node name="oneway2" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="oneway2"]
+position = Vector2( 881, 293 )
+rotation = -0.226893
+shape = SubResource( 11 )
+one_way_collision = true
+
+[node name="onewayStatic" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="onewayStatic"]
+position = Vector2( 479.5, 212.5 )
+shape = SubResource( 10 )
+disabled = true
+one_way_collision = true
