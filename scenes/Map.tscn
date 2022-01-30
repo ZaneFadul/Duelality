@@ -339,10 +339,10 @@ extents = Vector2( 46, 26.5 )
 extents = Vector2( 59, 60 )
 
 [sub_resource type="RectangleShape2D" id=11]
-extents = Vector2( 84.7753, 7 )
+extents = Vector2( 96.6946, 7 )
 
 [sub_resource type="RectangleShape2D" id=10]
-extents = Vector2( 481.5, 9.5 )
+extents = Vector2( 510, 9.5 )
 
 [node name="Map" type="Node2D"]
 
@@ -503,18 +503,18 @@ position = Vector2( 480, 433 )
 shape = SubResource( 9 )
 
 [node name="oneway3" type="StaticBody2D" parent="."]
-collision_layer = 4
-collision_mask = 4
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="oneway3"]
-position = Vector2( 79.0028, 295.184 )
+position = Vector2( 67.366, 292.604 )
 rotation = 0.218166
 shape = SubResource( 11 )
 one_way_collision = true
 
 [node name="oneway2" type="StaticBody2D" parent="."]
-collision_layer = 4
-collision_mask = 4
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="oneway2"]
 position = Vector2( 881, 293 )
@@ -527,7 +527,6 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="onewayStatic"]
-position = Vector2( 479.5, 212.5 )
+position = Vector2( 470, 212.5 )
 shape = SubResource( 10 )
-disabled = true
 one_way_collision = true

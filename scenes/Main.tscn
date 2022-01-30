@@ -1,21 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/Main.gd" type="Script" id=1]
-[ext_resource path="res://scenes/wall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Map.tscn" type="PackedScene" id=2]
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
 
-[node name="Wall6" parent="." instance=ExtResource( 2 )]
-position = Vector2( 4, -164 )
-
-[node name="Wall2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1024, -227 )
-
-[node name="Wall3" parent="." instance=ExtResource( 2 )]
-position = Vector2( -988, -230 )
-
-[node name="Wall4" parent="." instance=ExtResource( 2 )]
-position = Vector2( -681, -505 )
-rotation = 0.261799
-scale = Vector2( 0.766794, 1.02757 )
+[node name="Map" parent="." instance=ExtResource( 2 )]

@@ -454,6 +454,7 @@ transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource(
 [sub_resource type="AnimationNodeStateMachinePlayback" id=32]
 
 [node name="PlayerController" type="KinematicBody2D" groups=["hurtbox"]]
+collision_mask = 3
 script = SubResource( 2 )
 
 [node name="PlayerHurtbox" type="CollisionShape2D" parent="." groups=["hurtbox"]]
