@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/rematch.mp3-45c30c17b3db859b13d0117675bc4d5c.mp3str"
+
+[deps]
+
+source_file="res://audio/rematch.mp3"
+dest_files=[ "res://.import/rematch.mp3-45c30c17b3db859b13d0117675bc4d5c.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
