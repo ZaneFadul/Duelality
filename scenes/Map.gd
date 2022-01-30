@@ -36,15 +36,16 @@ func _process(delta):
 func _on_timer_timeout():
 	timer_on = false
 	emit_signal("shake", .4, .05, 3)
-	print("SHAKE")
+	#print("SHAKE")
 	if anim_player.current_animation == "fall":
 		emit_signal("flash", 0.15, 0.25)
 	
 
 
 func _on_AnimationPlayer_animation_started(anim_name):
-	emit_signal("shake", .8, .1, 20)
-	print("SHAKE-START")
+	#emit_signal("shake", .8, .1, 20)
+	#print("SHAKE-START")
+	pass
 
 #FALLING DROP CONSTANT SHAKE
 func _on_AnimationPlayer_animation_finished(anim_name):

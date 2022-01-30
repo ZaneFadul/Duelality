@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+signal countdown_start
+signal countdown_end
 
 func show_message(text):
 	$Message.text = str(text)
