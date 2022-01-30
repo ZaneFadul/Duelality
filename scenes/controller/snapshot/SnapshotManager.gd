@@ -5,6 +5,9 @@ var round_num = 0
 
 signal new_round()
 
+func get_round_num(): 
+	return round_num
+
 func incr_round_num():
 	round_num += 1
 	emit_signal('new_round')

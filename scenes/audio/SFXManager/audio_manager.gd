@@ -1,6 +1,6 @@
 extends Node2D
 
-var MY_NAME = "Magic Cassette"
+var MY_NAME = "Magic Cassette (SFX)"
 
 var audio_logic_tree_scene
 var song_controller_scene
@@ -22,8 +22,8 @@ func _on_configured():
 	var config = $audio_manager_config
 	var base_path = get_script().resource_path
 	var trimmed_path = base_path.substr(0, len(base_path)-16)
-	var audio_logic_tree_scene = load(trimmed_path + 'audio_logic_tree_handler.tscn')
-	var song_controller_scene = load(trimmed_path + 'song_controller.tscn')
+	audio_logic_tree_scene = load(trimmed_path + 'audio_logic_tree_handler.tscn')
+	song_controller_scene = load(trimmed_path + 'song_controller.tscn')
 	var audio_logic_tree_handler = audio_logic_tree_scene.instance()
 	var song_controller = song_controller_scene.instance()
 	audio_logic_tree_handler.set_state_directory(config.state_directory)
