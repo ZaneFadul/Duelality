@@ -183,13 +183,16 @@ func _on_AttackHitbox_body_entered(body):
 		# Increment round, create clone and send snapshot
 
 func take_damage():
-	print(\"ow\")
+	pass
 
 func get_snapshots():
 	return $Controller.get_snapshots()
 	
 func is_clone():
 	return $ControllerPlayer.is_clone
+
+func reset():
+	$Controller.start_time = OS.get_ticks_msec()
 "
 
 [sub_resource type="RectangleShape2D" id=1]

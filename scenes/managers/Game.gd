@@ -29,6 +29,7 @@ var p2
 
 var round_num
 var MAX_ROUNDS = 3
+var round_snapshots = {}
 
 var main_scene = preload("res://scenes/Main.tscn")
 var player_scene = preload("res://scenes/PlayerController.tscn")
@@ -48,8 +49,8 @@ func _ready():
 	add_child(main_instance)
 	
 func _process(_delta):
-	print(p1score, p2score)
-
+	pass
+	
 func _on_player_killed(player, killed_player, mainscene):
 	print("yo {player} is fucking dead".format({"player": killed_player}))
 	#check if that player was the main body or a clone
@@ -67,15 +68,29 @@ func _on_player_killed(player, killed_player, mainscene):
 			p2score += 1
 		else:
 			p1score += 1
+		killed_player.queue_free()
 
 func goto_next_round(player, killed_player, mainscene):
 	print("round over...")
 	p1.position = p1_starting_pos
 	p2.position = p2_starting_pos
+	p1.reset() #Start controller back at 0 seconds
+	p2.reset() 
 	if round_num == MAX_ROUNDS:
-		print('winner')
+		handle_win()
 	else:
-		round_num += 1
-		emit_signal('request_clone', p1.filename, p1_starting_pos, p1.get_snapshots(), mainscene)
-		emit_signal('request_clone', p2.filename, p2_starting_pos, p2.get_snapshots(), mainscene)
+		# Save snapshots in a snapshot per round
+		round_snapshots[round_num] = {"p1":p1.get_snapshots(), "p2":p2.get_snapshots()}
+	
 		
+		#Deleting all clones
+		$Main.delete_clones()
+		
+		#Recreate all clones
+		for i in round_num:
+			emit_signal('request_clone', p1.filename, p1_starting_pos, round_snapshots[round_num]["p1"], $Main)
+			emit_signal('request_clone', p2.filename, p2_starting_pos, round_snapshots[round_num]["p2"], $Main)
+		round_num += 1
+
+func handle_win():
+	print('winner')
