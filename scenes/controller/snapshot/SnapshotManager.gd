@@ -1,4 +1,6 @@
 extends Node
+var round_snapshots = {}
+var round_num = 0
 
 func _on_clone_requested(player_file, player_pos, snapshot_payload, mainscene):
 	var new_player = load(player_file).instance()
