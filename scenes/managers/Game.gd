@@ -23,8 +23,8 @@ var player2inputconfig = {
 var p1score = 0
 var p2score = 0
 
-var p1_starting_pos = Vector2(200, 300)
-var p2_starting_pos = Vector2(500, 300)
+var p1_starting_pos = Vector2(200, 450)
+var p2_starting_pos = Vector2(700, 450)
 
 var p1
 var p2
@@ -84,8 +84,8 @@ func goto_next_round(player, killed_player, mainscene):
 	print("round over...")
 	p1.position = p1_starting_pos
 	p2.position = p2_starting_pos
-	p1.reset() #Start controller back at 0 seconds
-	p2.reset()
+#	p1.reset() #Start controller back at 0 seconds
+#	p2.reset()
 	if sm.round_num == MAX_ROUNDS:
 		handle_win()
 	else:
