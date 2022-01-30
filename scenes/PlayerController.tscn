@@ -81,6 +81,13 @@ onready var _start_scale: Vector2 = _pivot.scale
 
 func _ready():
 	connect('player_killed', get_node('/root/Game'), '_on_player_killed')
+	set_physics_process(false)
+	yield(get_tree().create_timer(3), \"timeout\")
+	set_physics_process(true)
+	
+	
+	
+	
 
 func update_speed(speed, delta, direction):
 	
@@ -103,9 +110,6 @@ func update_speed(speed, delta, direction):
 	#Airdrift
 	elif not is_on_floor():
 		return speed * airdrift_multiplier
-
-func _draw():
-	draw_line($PlayerHurtbox.position, Vector2($PlayerHurtbox.position.x, $PlayerHurtbox.position.y+50),Color.red)
 	
 func _physics_process(delta: float) -> void:
 	
@@ -114,7 +118,7 @@ func _physics_process(delta: float) -> void:
 		var normal: Vector2 = get_floor_normal()
 		$Sprite.rotation = normal.angle()+1.57
 		$PlayerHurtbox.rotation = normal.angle()+1.57
-	
+
 	else:
 		_velocity.y += gravity * delta
 	
@@ -158,9 +162,21 @@ func _physics_process(delta: float) -> void:
 	if _velocity.x > 0:
 		$Sprite.flip_h=true
 		$PlayerHurtbox.position.x = 0
+		$AttackHitbox.position.x = 35
+		$AttackHitbox.rotation_degrees=-16.5
+		
+		
 	elif _velocity.x < 0:
 		$Sprite.flip_h=false
 		$PlayerHurtbox.position.x= 24
+		$AttackHitbox.position.x = -23
+		$AttackHitbox.rotation_degrees = 20
+		
+		
+		
+	
+#		is_falling = _velocity.y > 0.0 and not is_on_floor() and not is_zero_approx(_velocity.y)
+#	print(is_falling, ' : ', _velocity.y > 0.0, ' : ', not is_on_floor(), ' : ', abs(_velocity.y) > 5 ,' : ', _velocity.y)
 	
 func update_animation_state():
 	
@@ -251,7 +267,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 )
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite/AttackHitbox/AttackHitbox:disabled")
+tracks/1/path = NodePath("AttackHitbox/AttackHitbox:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -344,7 +360,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 )
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite/AttackHitbox/AttackHitbox:disabled")
+tracks/2/path = NodePath("AttackHitbox/AttackHitbox:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -401,7 +417,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 )
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite/AttackHitbox/AttackHitbox:disabled")
+tracks/1/path = NodePath("AttackHitbox/AttackHitbox:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
