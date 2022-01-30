@@ -20,8 +20,8 @@ export var speed := 50
 var initial_speed := speed
 export var top_speed := 450
 export var sinceDashStart = .7
-export var dash_multiplier = 20
-export var pivot_multiplier = 2
+export var dash_multiplier = 8
+export var pivot_multiplier = 1.5
 export var airdrift_multiplier = .5
 
 export var jump_strength := 1000.0
