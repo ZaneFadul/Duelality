@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://fonts/XOLO.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/HUD.gd" type="Script" id=2]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="Round" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -20.0
+margin_top = -1.0
+margin_right = -5.0
+margin_bottom = 19.0
+rect_scale = Vector2( 3.17303, 3.17303 )
+custom_fonts/font = ExtResource( 1 )
+text = "1"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Message" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_scale = Vector2( 1.00284, 1.00284 )
+custom_fonts/font = ExtResource( 1 )
+text = "DUEL
+"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MessageTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
