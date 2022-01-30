@@ -20,6 +20,11 @@ Inputs="*res://scenes/controller/Inputs.tscn"
 SnapshotManager="*res://scenes/controller/snapshot/SnapshotManager.tscn"
 GameManager="*res://scenes/managers/GameManager.tscn"
 
+[display]
+
+window/size/width=960
+window/size/height=540
+
 [input]
 
 jump={
