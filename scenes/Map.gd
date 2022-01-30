@@ -38,7 +38,7 @@ func _on_timer_timeout():
 	emit_signal("shake", .4, .05, 3)
 	#print("SHAKE")
 	if anim_player.current_animation == "fall":
-		emit_signal("flash", 0.15, 0.25)
+		emit_signal("flash", 0.15, 0.25, "red")
 	
 
 
@@ -52,7 +52,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "towers":
 		range_top = .5
 		emit_signal("shake", .4, .1, 20)
-		emit_signal("flash", 0.25, 0.7)
+		emit_signal("flash", 0.25, 0.7, "red")
 		print("FALLING SHAKING")
 		anim_player.current_animation = "fall"
 	else:
