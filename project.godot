@@ -20,6 +20,7 @@ Inputs="*res://scenes/controller/Inputs.tscn"
 SnapshotManager="*res://scenes/controller/snapshot/SnapshotManager.tscn"
 GameManager="*res://scenes/managers/GameManager.tscn"
 AudioManager="*res://scenes/audio/AudioManager/audio_manager.tscn"
+AudioGlobals="*res://scenes/audio/AudioGlobals.tscn"
 
 [display]
 
