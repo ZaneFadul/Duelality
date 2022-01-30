@@ -18,6 +18,5 @@ func _ready():
 	emit_signal('countdown_end')
 	$Message.hide()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+#connect('request_clone', get_node('/root/SnapshotManager'), '_on_clone_requested')
+
