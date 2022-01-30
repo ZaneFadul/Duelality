@@ -433,6 +433,10 @@ tracks/1/keys = {
 shader = ExtResource( 5 )
 shader_param/outline_width = 2.0
 shader_param/outline_color = Color( 1, 1, 1, 1 )
+shader_param/rim_light = true
+shader_param/rim_thickness = 5.0
+shader_param/rim_intense = 1.0
+shader_param/rim_extra_thick = false
 
 [sub_resource type="AnimationNodeAnimation" id=12]
 animation = "Attack"
@@ -514,11 +518,9 @@ transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource(
 extents = Vector2( 19.5254, 41.8052 )
 
 [node name="PlayerController" type="KinematicBody2D" groups=["hurtbox"]]
-
 material = SubResource( 43 )
 rotation = 0.000249064
-collision_mask = 3
-
+collision_mask = 2
 script = SubResource( 2 )
 
 [node name="PlayerHurtbox" type="CollisionShape2D" parent="."]
