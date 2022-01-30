@@ -88,7 +88,7 @@ func run_cleanup(action_obj):
 func get_snapshots():
 	 # TODO: Fix it so all actions that are not released are still added,
 	# seems like not all held actions are being added
-	print(current_actions)
+
 	for action in current_actions:
 		end_action_and_add_snapshot(action.keys()[0])
 	var to_return = snapshots
