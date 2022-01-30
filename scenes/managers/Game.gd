@@ -1,6 +1,7 @@
 extends Node2D
 
 signal request_clone(mainscene, player_scene, snapshot_payload)
+signal round_reset()
 
 var player1inputconfig = {
 	"LEFT": "MoveLeft",
@@ -87,9 +88,9 @@ func goto_next_round(player, killed_player, mainscene):
 	else:
 		# Save snapshots in a snapshot per round
 		sm.round_snapshots[sm.round_num] = {"p1":p1.get_snapshots(), "p2":p2.get_snapshots()}
+		emit_signal('round_reset')
 		$Main.reset()
 		
-
 
 func handle_win():
 	print('winner')
