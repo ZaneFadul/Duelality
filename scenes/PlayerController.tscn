@@ -52,6 +52,13 @@ onready var _start_scale: Vector2 = _pivot.scale
 
 func _ready():
 	connect('player_killed', get_node('/root/Game'), '_on_player_killed')
+	set_physics_process(false)
+	yield(get_tree().create_timer(3), \"timeout\")
+	set_physics_process(true)
+	
+	
+	
+	
 
 func update_speed(speed, delta, direction):
 	
@@ -74,9 +81,6 @@ func update_speed(speed, delta, direction):
 	#Airdrift
 	elif not is_on_floor():
 		return speed * airdrift_multiplier
-
-func _draw():
-	draw_line($PlayerHurtbox.position, Vector2($PlayerHurtbox.position.x, $PlayerHurtbox.position.y+50),Color.red)
 	
 func _physics_process(delta: float) -> void:
 	
@@ -143,7 +147,7 @@ func _physics_process(delta: float) -> void:
 		
 	
 #		is_falling = _velocity.y > 0.0 and not is_on_floor() and not is_zero_approx(_velocity.y)
-	print(is_falling, ' : ', _velocity.y > 0.0, ' : ', not is_on_floor(), ' : ', abs(_velocity.y) > 5 ,' : ', _velocity.y)
+#	print(is_falling, ' : ', _velocity.y > 0.0, ' : ', not is_on_floor(), ' : ', abs(_velocity.y) > 5 ,' : ', _velocity.y)
 	
 func update_animation_state():
 	
