@@ -57,5 +57,5 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	else:
 		print("CRASH LANDING")
 		timer_stopped = true
-		emit_signal("shake", .6, .3, 40)
+		emit_signal("shake", .4, .1, 40)
 		timer.stop()

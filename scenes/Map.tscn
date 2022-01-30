@@ -331,7 +331,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.001, 95, 100, 110 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 660, -1560 ), Vector2( 660, -1560 ), Vector2( 660, 15 ), Vector2( 660, 150 ), Vector2( 660, -1560 ) ]
+"values": [ Vector2( 660, -1560 ), Vector2( 660, -1560 ), Vector2( 660, 90 ), Vector2( 660, 150 ), Vector2( 660, -1560 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("towers/Towerleft:position")
@@ -343,7 +343,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 95, 100, 110 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, -1560 ), Vector2( 0, 15 ), Vector2( 0, 150 ), Vector2( 0, -1560 ) ]
+"values": [ Vector2( 0, -1560 ), Vector2( 0, 90 ), Vector2( 0, 150 ), Vector2( 0, -1560 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("towers/Towerright:rotation_degrees")
@@ -451,7 +451,7 @@ tracks/10/keys = {
 "times": PoolRealArray( 0, 95, 100, 110 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 0, 1555.5 ), Vector2( 0, 1710 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 0, 1650 ), Vector2( 0, 1710 ), Vector2( 0, 0 ) ]
 }
 tracks/11/type = "value"
 tracks/11/path = NodePath("neon:rotation_degrees")
