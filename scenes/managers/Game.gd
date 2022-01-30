@@ -23,8 +23,8 @@ var player2inputconfig = {
 var p1score = 0
 var p2score = 0
 
-var p1_starting_pos = Vector2(200, 300)
-var p2_starting_pos = Vector2(500, 300)
+var p1_starting_pos = Vector2(200, 450)
+var p2_starting_pos = Vector2(700, 450)
 
 var p1
 var p2
@@ -56,7 +56,7 @@ func _ready():
 	for i in range(sm.round_num):
 		emit_signal('request_clone', p1.filename, p1_starting_pos, sm.round_snapshots[sm.round_num]["p1"], $Main)
 		emit_signal('request_clone', p2.filename, p2_starting_pos, sm.round_snapshots[sm.round_num]["p2"], $Main)
-	sm.round_num += 1
+	sm.incr_round_num()
 	
 	
 func _process(_delta):
@@ -85,8 +85,8 @@ func goto_next_round(player, killed_player, mainscene):
 	print("round over...")
 	p1.position = p1_starting_pos
 	p2.position = p2_starting_pos
-	p1.reset() #Start controller back at 0 seconds
-	p2.reset()
+#	p1.reset() #Start controller back at 0 seconds
+#	p2.reset()
 	if sm.round_num == MAX_ROUNDS:
 		handle_win()
 	else:
