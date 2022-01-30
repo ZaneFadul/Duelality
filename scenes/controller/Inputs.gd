@@ -8,7 +8,9 @@ var input_list = [
 	"W",
 	"A",
 	"S",
-	"D"
+	"D",
+	"E",
+	"SLASH"
 ]
 
 var action_names = get_dir_contents("res://scenes/controller/actions/")

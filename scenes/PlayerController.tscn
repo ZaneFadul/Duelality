@@ -10,7 +10,7 @@ script/source = "extends KinematicBody2D
 
 const UP_DIRECTION = Vector2.UP
 var player_id = 1
-signal player_killed(other_player, mainscene, player, snapshot_payload)
+signal player_killed(player, other_player, mainscene)
 
 #Animations
 var animation_state = 'IDLE'
@@ -175,14 +175,18 @@ func update_animation_state():
 #Attack
 func _on_AttackHitbox_body_entered(body):
 	if body.is_in_group('hurtbox'):
+		if body == self: return 
 		body.take_damage()
 		# Round ends
 		# Emit signal player_killed, check if that player was the main body or a clone, if body, go to next round, if at last round, show win screen, go back to menu
-		emit_signal('player_killed', body, get_tree().get_current_scene(), filename, $Controller.get_snapshots())
+		emit_signal('player_killed', filename, body, get_tree().get_current_scene())
 		# Increment round, create clone and send snapshot
 
 func take_damage():
 	print(\"ow\")
+
+func get_snapshots():
+	return $Controller.get_snapshots()
 	
 func is_clone():
 	return $ControllerPlayer.is_clone

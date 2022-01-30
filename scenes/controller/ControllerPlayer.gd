@@ -36,6 +36,7 @@ func upload_payload(payload):
 	snapshot_payload = payload
 	start_time = OS.get_ticks_msec()
 	can_playback = true
+	calibrate_snapshot()
 	
 func calibrate_snapshot():
 	for snapshot in snapshot_payload:
