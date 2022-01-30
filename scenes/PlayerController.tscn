@@ -129,9 +129,18 @@ func _physics_process(delta: float) -> void:
 	if _velocity.x > 0:
 		$Sprite.flip_h=true
 		$PlayerHurtbox.position.x = 0
+		$AttackHitbox.position.x = 35
+		$AttackHitbox.rotation_degrees=-16.5
+		
+		
 	elif _velocity.x < 0:
 		$Sprite.flip_h=false
 		$PlayerHurtbox.position.x= 24
+		$AttackHitbox.position.x = -23
+		$AttackHitbox.rotation_degrees = 20
+		
+		
+		
 	
 #		is_falling = _velocity.y > 0.0 and not is_on_floor() and not is_zero_approx(_velocity.y)
 	print(is_falling, ' : ', _velocity.y > 0.0, ' : ', not is_on_floor(), ' : ', abs(_velocity.y) > 5 ,' : ', _velocity.y)
@@ -225,7 +234,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 )
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite/AttackHitbox/AttackHitbox:disabled")
+tracks/1/path = NodePath("AttackHitbox/AttackHitbox:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -318,7 +327,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 )
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite/AttackHitbox/AttackHitbox:disabled")
+tracks/2/path = NodePath("AttackHitbox/AttackHitbox:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -375,7 +384,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 )
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite/AttackHitbox/AttackHitbox:disabled")
+tracks/1/path = NodePath("AttackHitbox/AttackHitbox:disabled")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -386,9 +395,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [ true ]
 }
-
-[sub_resource type="RectangleShape2D" id=41]
-extents = Vector2( 19.5254, 41.8052 )
 
 [sub_resource type="AnimationNodeAnimation" id=12]
 animation = "Attack"
@@ -466,12 +472,15 @@ transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource(
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=32]
 
+[sub_resource type="RectangleShape2D" id=41]
+extents = Vector2( 19.5254, 41.8052 )
+
 [node name="PlayerController" type="KinematicBody2D" groups=["hurtbox"]]
 collision_mask = 3
 script = SubResource( 2 )
 
 [node name="PlayerHurtbox" type="CollisionShape2D" parent="."]
-position = Vector2( -2, 8 )
+position = Vector2( 26, 0 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -488,17 +497,7 @@ anims/idle = SubResource( 11 )
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 12, -1 )
 texture = ExtResource( 1 )
-flip_h = true
 hframes = 30
-
-[node name="AttackHitbox" type="Area2D" parent="Sprite"]
-position = Vector2( 21, -25 )
-rotation = -0.287388
-scale = Vector2( 0.799999, 0.799999 )
-
-[node name="AttackHitbox" type="CollisionShape2D" parent="Sprite/AttackHitbox"]
-position = Vector2( 9.40967, 32.1091 )
-shape = SubResource( 41 )
 
 [node name="PlayerAnimations" type="AnimationTree" parent="."]
 tree_root = SubResource( 31 )
@@ -511,4 +510,13 @@ script = ExtResource( 3 )
 
 [node name="ControllerPlayer" parent="." instance=ExtResource( 4 )]
 
-[connection signal="body_entered" from="Sprite/AttackHitbox" to="." method="_on_AttackHitbox_body_entered"]
+[node name="AttackHitbox" type="Area2D" parent="."]
+position = Vector2( 33, -26 )
+rotation = -0.287388
+scale = Vector2( 0.799999, 0.799999 )
+
+[node name="AttackHitbox" type="CollisionShape2D" parent="AttackHitbox"]
+position = Vector2( 10, 31 )
+shape = SubResource( 41 )
+
+[connection signal="body_entered" from="AttackHitbox" to="." method="_on_AttackHitbox_body_entered"]
