@@ -20,7 +20,11 @@ func playback(delta):
 		var curr_time = OS.get_ticks_msec() - start_time
 		var time_to_end = snapshot[actionfunc]["start"] + snapshot[actionfunc]["duration"]
 		if curr_time >= snapshot[actionfunc]["start"] and curr_time < time_to_end:
-			actionfunc.call_func({"player": snapshot[actionfunc]["player"], "delta": delta})
+			actionfunc["main"].call_func({"player": snapshot[actionfunc]["player"], "delta": delta})
+		elif curr_time > time_to_end:
+			if not snapshot[actionfunc]["cleaned"]:
+				actionfunc["cleanup"].call_func({"player": snapshot[actionfunc]["player"], "delta": delta})
+				snapshot[actionfunc]["cleaned"] = true
 		
 func _on_payload_received(payload):
 	snapshot_payload = payload
@@ -32,9 +36,11 @@ func upload_payload(payload):
 	snapshot_payload = payload
 	start_time = OS.get_ticks_msec()
 	can_playback = true
+	calibrate_snapshot()
 	
 func calibrate_snapshot():
 	for snapshot in snapshot_payload:
 		var actionfunc = snapshot.keys()[0]
 		#snapshot[actionfunc]["start"] = start_time - snapshot[actionfunc]["start"]
 		snapshot[actionfunc]["player"] = get_parent()
+		snapshot[actionfunc]["cleaned"] = false

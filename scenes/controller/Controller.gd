@@ -2,15 +2,21 @@ extends Node
 
 signal sending_payload(snapshots)
 
+# Inputs object and current user inputs
 var Inputs
 var current_inputs = []
 
+# Current action functions active
 var current_actions = []
+
+# List of completed action functions, plus their durations, player object, start time
 var snapshots = []
 
+# Action dictionary mapping the name of action to function ref object
 var actions = {}
 
 var start_time
+
 var action_map
 
 func _ready():
@@ -26,11 +32,13 @@ func _physics_process(delta):
 	update_inputs()
 	for input in current_inputs:
 		if input in actions:
-			actions[input].call_func({"player":get_parent(), "delta": delta})
-			for action in current_actions:
-				if action.keys()[0] == actions[input]:
-					return
-			start_action_timer(actions[input], {"start": OS.get_ticks_msec() - start_time})
+			actions[input]["main"].call_func({"player":get_parent(), "delta": delta})
+			
+			var current_action_funcs = []
+			for current_action in current_actions:
+				current_action_funcs.append(current_action.keys()[0])
+			if not actions[input] in current_action_funcs:
+				start_action_timer(actions[input], {"start": OS.get_ticks_msec() - start_time})
 		else:
 			if input in action_map.keys():
 				print(input + " does not have an action mapped to it. Fix that please : )")
@@ -44,7 +52,8 @@ func update_inputs(event=null):
 				while input in current_inputs:
 					current_inputs.remove(input)
 					if not input in actions: return
-					end_action_and_add_snapshot(actions[input])					
+					run_cleanup(actions[input])
+					end_action_and_add_snapshot(actions[input])
 	else:
 		for input in Inputs.input_list:
 			if Input.is_action_pressed(input) and not input in current_inputs:
@@ -73,7 +82,15 @@ func end_action_and_add_snapshot(actionfunc):
 			#erase
 			current_actions.erase(curr)
 
+func run_cleanup(action_obj):
+	action_obj["cleanup"].call_func({"player":get_parent()})
+	
 func get_snapshots():
+	 # TODO: Fix it so all actions that are not released are still added,
+	# seems like not all held actions are being added
+
+	for action in current_actions:
+		end_action_and_add_snapshot(action.keys()[0])
 	var to_return = snapshots
 	snapshots = []
 	return to_return

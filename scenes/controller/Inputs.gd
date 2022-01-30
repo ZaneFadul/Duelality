@@ -8,7 +8,9 @@ var input_list = [
 	"W",
 	"A",
 	"S",
-	"D"
+	"D",
+	"E",
+	"SLASH"
 ]
 
 var action_names = get_dir_contents("res://scenes/controller/actions/")
@@ -22,7 +24,9 @@ func build_actions():
 		var action_scene = load(trimmed_path + "actions/" + action_name + '.tscn')
 		var scene = action_scene.instance()
 		add_child(scene)
-		to_return[action_name] = funcref(scene, "function")
+		to_return[action_name] = {"main": funcref(scene, "function"),
+								  "cleanup": funcref(scene, "cleanup")
+								}
 	return to_return
 	
 func generate_key_action_pairs(dict):
