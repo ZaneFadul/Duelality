@@ -114,7 +114,11 @@ func _physics_process(delta: float) -> void:
 	
 	#Horizontal Movement
 	var snap=transform.y * 128 if !is_jumping else Vector2.ZERO
-	_velocity = move_and_slide_with_snap(_velocity, snap, UP_DIRECTION)
+	
+	if !get_collision_mask_bit(1):
+		_velocity = move_and_slide(_velocity, UP_DIRECTION)
+	else:
+		_velocity = move_and_slide_with_snap(_velocity, snap, UP_DIRECTION)
 	
 	animation_state = update_animation_state()
 	#Animations
@@ -460,7 +464,7 @@ transitions = [ "Idle", "Run", SubResource( 20 ), "Idle", "Attack", SubResource(
 collision_mask = 3
 script = SubResource( 2 )
 
-[node name="PlayerHurtbox" type="CollisionShape2D" parent="." groups=["hurtbox"]]
+[node name="PlayerHurtbox" type="CollisionShape2D" parent="."]
 position = Vector2( -2, 8 )
 shape = SubResource( 1 )
 
