@@ -56,7 +56,7 @@ func _ready():
 	for i in range(sm.round_num):
 		emit_signal('request_clone', p1.filename, p1_starting_pos, sm.round_snapshots[sm.round_num]["p1"], $Main)
 		emit_signal('request_clone', p2.filename, p2_starting_pos, sm.round_snapshots[sm.round_num]["p2"], $Main)
-	sm.round_num += 1
+	sm.incr_round_num()
 	
 func _process(_delta):
 	pass
