@@ -119,9 +119,12 @@ func _physics_process(delta: float) -> void:
 	animation_state = update_animation_state()
 	#Animations
 	
-	if not is_zero_approx(_velocity.x):
-		_pivot.scale.x = sign(_velocity.x) * _start_scale.x
-		pass
+	if _velocity.x > 0:
+		$Sprite.flip_h=true
+		$PlayerHurtbox.position.x = 0
+	elif _velocity.x < 0:
+		$Sprite.flip_h=false
+		$PlayerHurtbox.position.x= 24
 		
 func update_animation_state():
 	
