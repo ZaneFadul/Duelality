@@ -58,6 +58,7 @@ func _ready():
 		emit_signal('request_clone', p2.filename, p2_starting_pos, sm.round_snapshots[sm.round_num]["p2"], $Main)
 	sm.incr_round_num()
 	
+	
 func _process(_delta):
 	pass
 	

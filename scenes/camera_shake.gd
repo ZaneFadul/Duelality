@@ -4,6 +4,7 @@ onready var timer_shake_length = $timer_shake_length
 onready var timer_wait_time = $timer_wait_times
 onready var tween_shake = $Tween
 onready var flash_image = $Sprite
+onready var flash_image_white = $Sprite2
 
 var reset_speed = 0
 var strength = 0
@@ -44,11 +45,19 @@ func start_shake(time_of_shake, speed_of_shake, strength_of_shake):
 	timer_wait_time.start(speed_of_shake)
 	
 #flashbang!
-func start_flash(speed, strength):
-	tween_shake.interpolate_property(flash_image, "modulate:a", 0, strength, speed, Tween.TRANS_SINE, Tween.EASE_OUT)
-	tween_shake.start()
-	
-	yield(get_tree().create_timer(speed), "timeout")
-	tween_shake.interpolate_property(flash_image,"modulate:a", strength, 0, speed, Tween.TRANS_SINE, Tween.EASE_OUT)
-	tween_shake.start()
+func start_flash(speed, strength, color):
+	if(color == "red"):
+		tween_shake.interpolate_property(flash_image, "modulate:a", 0, strength, speed, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween_shake.start()
+		
+		yield(get_tree().create_timer(speed), "timeout")
+		tween_shake.interpolate_property(flash_image,"modulate:a", strength, 0, speed, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween_shake.start()
+	else:
+		tween_shake.interpolate_property(flash_image_white, "modulate:a", 0, strength, speed, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween_shake.start()
+		
+		yield(get_tree().create_timer(speed), "timeout")
+		tween_shake.interpolate_property(flash_image_white,"modulate:a", strength, 0, speed, Tween.TRANS_SINE, Tween.EASE_OUT)
+		tween_shake.start()
 	
