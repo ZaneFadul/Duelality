@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/neon-ramen.png-b659923421296c5815da79427c6750ee.stex"
+path="res://.import/neon-stars.png-7f0c3ab3ec2c89bf7001e56330e61b45.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/neon-ramen.png"
-dest_files=[ "res://.import/neon-ramen.png-b659923421296c5815da79427c6750ee.stex" ]
+source_file="res://sprites/neon/neon-stars.png"
+dest_files=[ "res://.import/neon-stars.png-7f0c3ab3ec2c89bf7001e56330e61b45.stex" ]
 
 [params]
 

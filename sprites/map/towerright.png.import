@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/map.png-659e88586eefd66127a1dc6c44095341.stex"
+path="res://.import/towerright.png-60b00d1c728c083188404d0801d2a08b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/map.png"
-dest_files=[ "res://.import/map.png-659e88586eefd66127a1dc6c44095341.stex" ]
+source_file="res://sprites/map/towerright.png"
+dest_files=[ "res://.import/towerright.png-60b00d1c728c083188404d0801d2a08b.stex" ]
 
 [params]
 

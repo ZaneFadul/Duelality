@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/towerleft.png-87ca7838494278a33f257fb1ef229291.stex"
+path="res://.import/map-crates.png-87cf6d0909be956887103adda0916520.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/towerleft.png"
-dest_files=[ "res://.import/towerleft.png-87ca7838494278a33f257fb1ef229291.stex" ]
+source_file="res://sprites/map/map-crates.png"
+dest_files=[ "res://.import/map-crates.png-87cf6d0909be956887103adda0916520.stex" ]
 
 [params]
 

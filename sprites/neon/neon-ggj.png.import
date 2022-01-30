@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/neon-ggj.png-b305bc85cbae2ec555c7dcb9e480d905.stex"
+path="res://.import/neon-ggj.png-ab4b006f24290aad4fc14e2264812d7d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/neon-ggj.png"
-dest_files=[ "res://.import/neon-ggj.png-b305bc85cbae2ec555c7dcb9e480d905.stex" ]
+source_file="res://sprites/neon/neon-ggj.png"
+dest_files=[ "res://.import/neon-ggj.png-ab4b006f24290aad4fc14e2264812d7d.stex" ]
 
 [params]
 

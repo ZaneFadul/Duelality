@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/map-bgnight.png-0a1ad75deb0e5135800222ad01a451c7.stex"
+path="res://.import/map-city2.png-ded7ced903583dc0fad046c7e905b662.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/map-bgnight.png"
-dest_files=[ "res://.import/map-bgnight.png-0a1ad75deb0e5135800222ad01a451c7.stex" ]
+source_file="res://sprites/map/map-city2.png"
+dest_files=[ "res://.import/map-city2.png-ded7ced903583dc0fad046c7e905b662.stex" ]
 
 [params]
 

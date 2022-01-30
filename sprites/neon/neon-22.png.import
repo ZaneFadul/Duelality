@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/map-city2.png-ea552af194a88395b8092a66a9206c2a.stex"
+path="res://.import/neon-22.png-7dd3c4c52fc0cc669ef4a3d3a9fd0c99.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/map-city2.png"
-dest_files=[ "res://.import/map-city2.png-ea552af194a88395b8092a66a9206c2a.stex" ]
+source_file="res://sprites/neon/neon-22.png"
+dest_files=[ "res://.import/neon-22.png-7dd3c4c52fc0cc669ef4a3d3a9fd0c99.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/neon-armstrong.png-638219fe3d049c636199eca4cacc19c8.stex"
+path="res://.import/neon-triangles.png-ec5bd3ba6fb7bf2ad73cc4e1799fc580.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/neon-armstrong.png"
-dest_files=[ "res://.import/neon-armstrong.png-638219fe3d049c636199eca4cacc19c8.stex" ]
+source_file="res://sprites/neon/neon-triangles.png"
+dest_files=[ "res://.import/neon-triangles.png-ec5bd3ba6fb7bf2ad73cc4e1799fc580.stex" ]
 
 [params]
 

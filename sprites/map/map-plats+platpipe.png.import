@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/map-wall.png-f1729383ba36e40c590597864c85e6ee.stex"
+path="res://.import/map-plats+platpipe.png-33f5e9c56bb828925f8d9a5308faab9a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/map-wall.png"
-dest_files=[ "res://.import/map-wall.png-f1729383ba36e40c590597864c85e6ee.stex" ]
+source_file="res://sprites/map/map-plats+platpipe.png"
+dest_files=[ "res://.import/map-plats+platpipe.png-33f5e9c56bb828925f8d9a5308faab9a.stex" ]
 
 [params]
 
