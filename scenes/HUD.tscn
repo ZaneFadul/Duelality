@@ -38,5 +38,3 @@ __meta__ = {
 
 [node name="MessageTimer" type="Timer" parent="."]
 one_shot = true
-
-[connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]

@@ -31,8 +31,8 @@ var MAX_ROUNDS = 3
 
 var sm
 
-var main_scene = preload("res://scenes/Main.tscn")
-var player_scene = preload("res://scenes/PlayerController.tscn")
+onready var main_scene = preload("res://scenes/Main.tscn")
+onready var player_scene = preload("res://scenes/PlayerController.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
